@@ -36,25 +36,31 @@ class Avis
     {
         $this->pdo = $pdo;
         $this->avis_id = $avis_id;
-        $sql = "SELECT Avis_Id, Commentaire, Note, Statut, soumis_par, valide_refuse_par, Commande FROM avis WHERE Avis_Id =?";
+        $sql = "SELECT Avis_Id, Commentaire, Note, Statut, Soumis_par, Valide_refuse_par, Commande FROM avis WHERE Avis_Id =?";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$avis_id]);
         $resultat = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($resultat) {
 
-            $this->commentaire = $resultat["commentaire"];
+            if ($resultat["Commentaire"] == null) {
+                $this->commentaire = "";
+            }
+            else {
+                $this->commentaire = $resultat["Commentaire"];
+            }
             $this->note = $resultat["Note"];
             $this->statut = $resultat["Statut"];
-            $this->commande = $resultat["commande"];
 
-            $utilisateur_id = $resultat["soumis_par"];
+            $utilisateur_id = $resultat["Soumis_par"];
             $this->soumis_par = new Utilisateur($utilisateur_id, $pdo);
             
-            $utilisateur_id = $resultat["valide_refuse_par"];
-            $this->valide_refuse_par = new Utilisateur($utilisateur_id, $pdo);
+            $utilisateur_id = $resultat["Valide_refuse_par"];
+            if ($utilisateur_id != null) {
+                $this->valide_refuse_par = new Utilisateur($utilisateur_id, $pdo);
+            }
             
-            $commande_id = $resultat["commande"];
+            $commande_id = $resultat["Commande"];
             $this->commande = new Commande($commande_id, $pdo);
         }
     }
@@ -69,6 +75,23 @@ class Avis
             return new Avis($resultat['Utilisateur_Id'], $resultat['Covoiturage_Id'], $pdo);
         }
         return null;
+    }
+
+    public static function loadBestAvis(PDO $pdo): array {
+        // SQL : SELECT Avis_Id, Note, Commentaire, Soumis_par, utilisateur.Nom, utilisateur.Prenom, utilisateur.Pseudo, utilisateur.Photo FROM avis JOIN utilisateur ON avis.Soumis_par = utilisateur.Utilisateur_Id WHERE avis.Statut = 'Validé' ORDER BY Note DESC LIMIT 3
+        $sql = "SELECT Avis_Id, Note, Commentaire, Soumis_par, utilisateur.Nom, utilisateur.Prenom, utilisateur.Pseudo, utilisateur.Photo FROM avis JOIN utilisateur ON avis.Soumis_par = utilisateur.Utilisateur_Id WHERE avis.Statut = 'Validé' ORDER BY Note DESC LIMIT 3";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([]);
+        $resultat = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // print_r($resultat);
+        $avis = [];
+        if ($resultat) {
+            foreach ($resultat as $value) {
+                $new_avis = new Avis($value["Avis_Id"], $pdo);
+                array_push($avis,$new_avis);
+            }
+        }
+        return $avis;
     }
 
     public function soumettreAvis(int $note, string $commentaire, $pdo): Result
@@ -127,14 +150,42 @@ class Avis
         return $this->note;
     }
 
-    public function getComments(): string
+    public function getCommentaire(): string
     {
         return $this->commentaire;
     }
 
+    public function getCommande() : Commande {
+
+        return $this->commande;
+    }
+
+    // public function setComments(String $newComment): void {
+    //     if ($newComment == null) {
+    //         return;
+    //     }
+    //     if ($newComment.length() < 50) {
+    //         return;
+    //     }
+    //     $this->commentaire = $newComment;
+    // }
+
+
+
+
     public function getStatut(): string
     {
         return $this->statut;
+    }
+
+    public function getSoumisPar(): Utilisateur
+    {
+        return $this->soumis_par;
+    }
+    
+    public function getSoumisParId(): int
+    {
+        return $this->soumis_par->getId();
     }
 
     public function getUtilisateur(): Utilisateur
