@@ -6,7 +6,6 @@ $db_server = "localhost";
 // $db_name = "viteetgourmand";
 $pdo = "";
 
-// $db_server = "mysql-ecorideprojet23.alwaysdata.net";
 $db_user = "431868_db";
 $db_pass = "Rfernand23*";
 $db_name = "viteetgourmand";
