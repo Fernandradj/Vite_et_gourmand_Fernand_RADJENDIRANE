@@ -5,8 +5,8 @@ class Utilisateur
     public const USER_STATUT_ACTIF = 'Actif';
 
     public const USER_ROLE_ADMIN = 'Administrateur';
-    public const USER_ROLE_EMPLOYE = 'Employe';
-    public const USER_ROLE_UITILISATEUR = 'Utilisateur';
+    public const USER_ROLE_EMPLOYE = 'Employé';
+    public const USER_ROLE_UITILISATEUR = 'Client';
     public const RESULT_UPDATE_PROFIL_SUCCESS = "Le profil a été mis à jour avec succès.";
     public const RESULT_UPDATE_NOTE_SUCCESS = "La note a été mis à jour avec succès.";
     public const RESULT_FAIL = "Une erreur s'est produite lors de l'enregistrement. Veuilllez réessayer ultérieurement.";
@@ -27,20 +27,20 @@ class Utilisateur
     private string $address;
     private string $phone;
     private string $email;
-    private float $reviewScore;
-    private float $reviewCount;
+    // private float $reviewScore;
+    // private float $reviewCount;
     private string $photoUrl;
-    private bool $preferenceAnimal;
-    private bool $preferenceFumeur;
-    private string $preference;
+    // private bool $preferenceAnimal;
+    // private bool $preferenceFumeur;
+    // private string $preference;
 
-    private float $credit;
+    // private float $credit;
 
     public function __construct(int $id, PDO $pdo)
     {
         $this->pdo = $pdo;
         $this->id = $id;
-        $sql = "SELECT Utilisateur_Id, Pseudo, Statut, Utilisateur_id, Nom, Prenom, Date_naissance, Note, Adresse, Telephone, Email, Photo, Animal_accepte, Fumeur_accepte, Autre_preference, Credit FROM utilisateur WHERE Utilisateur_Id = ?";
+        $sql = "SELECT Utilisateur_Id, Pseudo, Statut, Utilisateur_id, Nom, Prenom, Date_naissance, Adresse, Telephone, Email, Photo FROM utilisateur WHERE Utilisateur_Id = ?";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$id]);
         $user = $stmt->fetch();
@@ -54,22 +54,21 @@ class Utilisateur
             $this->statut = $user["Statut"];
             $this->phone = $user["Telephone"];
             $this->email = $user["Email"];
-            $this->reviewScore = $user["Note"];
-            $this->reviewCount = 0;
+            // $this->reviewCount = 0;
             $this->photoUrl = $user["Photo"];
-            $this->preferenceAnimal = $user['Animal_accepte'];
-            $this->preferenceFumeur = $user['Fumeur_accepte'];
-            $this->preference = $user["Autre_preference"];
-            $this->credit = $user["Credit"];
+            // $this->preferenceAnimal = $user['Animal_accepte'];
+            // $this->preferenceFumeur = $user['Fumeur_accepte'];
+            // $this->preference = $user["Autre_preference"];
+            // $this->credit = $user["Credit"];
 
-            $roles = Utilisateur::loadRoles($id, $pdo);
-            $this->role = Utilisateur::checkUserRole($roles);
+            // $roles = Utilisateur::loadRoles($id, $pdo);
+            // $this->role = Utilisateur::checkUserRole($roles);
         }
     }
 
     public static function loadUserFromUsername(string $username, PDO $pdo): array
     {
-        $sql = "SELECT Utilisateur_Id, Pseudo, Password, Statut FROM utilisateur WHERE Pseudo = ?";
+        $sql = "SELECT Utilisateur_Id, Pseudo, Password, Statut, Role FROM utilisateur WHERE Pseudo = ?";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$username]);
         $user = $stmt->fetch();
@@ -104,17 +103,17 @@ class Utilisateur
         return [];
     }
 
-    public static function loadRoles(int $userId, PDO $pdo): array
-    {
-        $sql = "SELECT role.Role_Id, Libelle FROM role JOIN utilisateur_role ON role.Role_Id = utilisateur_role.Role_Id WHERE Utilisateur_Id = ?";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([$userId]);
-        $roles = $stmt->fetchAll();
-        if ($roles) {
-            return $roles;
-        }
-        return [];
-    }
+    // public static function loadRoles(int $userId, PDO $pdo): array
+    // {
+    //     $sql = "SELECT role.Role_Id, Libelle FROM role JOIN utilisateur_role ON role.Role_Id = utilisateur_role.Role_Id WHERE Utilisateur_Id = ?";
+    //     $stmt = $pdo->prepare($sql);
+    //     $stmt->execute([$userId]);
+    //     $roles = $stmt->fetchAll();
+    //     if ($roles) {
+    //         return $roles;
+    //     }
+    //     return [];
+    // }
 
     public static function checkUserRole(array $roles): string
     {
