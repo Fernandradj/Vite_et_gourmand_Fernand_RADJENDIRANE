@@ -14,9 +14,11 @@ $menu_id = htmlspecialchars($_GET["menuId"]);
 // echo $menu_id;
 $menu = new Menu($menu_id, $pdo);
 
-$commandeLink = "connexion.php";
+$commandeLink = "";
+$isLoggedIn = false;
 if (isset($_SESSION["id"])) {
     $commandeLink = "commande.php?menuId=" . $menu->getId();
+    $isLoggedIn = true;
 }
 
 ?>
@@ -133,9 +135,13 @@ if (isset($_SESSION["id"])) {
                             <p>
                                 <?php echo $menu->getDescription() ?>
                             </p>
+                            <p class="personne_min">
+                                <b>Nombre de personne minimum</b> : <?php echo $menu->getNombre_personne_minimum() ?>
+                            </p>
                             <p class="prix_personne">
                                 <b>Prix par personne</b> : <?php echo $menu->getPrix_par_personne() ?>
                             </p>
+
                             <p class="regime">
                                 <b>Régime</b> : <?php echo $menu->getRegime() ?>
                             </p>
@@ -149,12 +155,19 @@ if (isset($_SESSION["id"])) {
                                 <b>Conditions</b> : <?php echo $menu->getCondition() ?>
                             </p>
 
+                            <?php if (!$isLoggedIn): ?>
+                                <p>Voulez-vous commander ce menu ? Connectez-vous d'abord.</p>
+                            <?php endif; ?>
 
 
-
-
-                            <a href=<?php echo $commandeLink ?>> <button type="button"
-                                    class="read_more_btn">Commander</button></a>
+                            <?php if ($isLoggedIn): ?>
+                                <a href=<?php echo $commandeLink ?>> <button type="button"
+                                        class="read_more_btn">Commander</button></a>
+                            <?php endif; ?>
+                            <?php if (!$isLoggedIn): ?>
+                                <a href="connexion.php"> <button type="button" class="read_more_btn">Se
+                                        Connecter</button></a>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
