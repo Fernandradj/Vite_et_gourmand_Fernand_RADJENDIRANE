@@ -54,7 +54,7 @@ class Menu
                 if ($photo == null) {
                     $photo = "";
                 }
-                $new_produit = new Produit($value["Produit_Id"], $value["Nom"], $value["Type"], $photo, pdo: $pdo);
+                $new_produit = new Produit(false, $value["Produit_Id"], $value["Nom"], $value["Type"], $photo,  $pdo);
 
                 if ($value["Type"] == "Entrée") {
                     array_push($this->entrees, $new_produit);
@@ -125,12 +125,12 @@ class Menu
         $entreeString = ltrim($entreeString, '/');
         return $entreeString;
     }
-public function getEntreeArray()
-{
-    return $this->entrees;
+    public function getEntreeArray()
+    {
+        return $this->entrees;
     }
 
-     public function getPlat(): string
+    public function getPlat(): string
     {
         $platString = "";
         foreach ($this->plats as $plat) {
@@ -140,11 +140,11 @@ public function getEntreeArray()
         return $platString;
     }
     public function getPlatArray()
-{
-    return $this->plats;
+    {
+        return $this->plats;
     }
 
-      public function getDessert(): string
+    public function getDessert(): string
     {
         $dessertString = "";
         foreach ($this->desserts as $dessert) {
@@ -154,8 +154,8 @@ public function getEntreeArray()
         return $dessertString;
     }
     public function getDessertArray()
-{
-    return $this->desserts;
+    {
+        return $this->desserts;
     }
 
 
@@ -188,7 +188,25 @@ public function getEntreeArray()
         }
         return $menu;
     }
+    public static function reduireQuantiteMenu(int $menu_id, PDO $pdo): void
+    {
 
+        // 1. get quantity
+        $sql = "SELECT Quantite_restante FROM Menu WHERE Menu_Id =?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$menu_id]);
+        $resultat = $stmt->fetch();
+        if ($resultat) {
+            $quantite_restante = $resultat["Quantite_restante"] - 1;
+
+            // 2. update with new quantity
+            $sql = "UPADTE Menu SET = Quantite_restante = " . $quantite_restante . " WHERE Menu_Id = ? ";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$menu_id]);
+        }
+
+
+    }
 }
 
 

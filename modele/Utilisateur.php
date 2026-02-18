@@ -40,7 +40,7 @@ class Utilisateur
     {
         $this->pdo = $pdo;
         $this->id = $id;
-        $sql = "SELECT Utilisateur_Id, Pseudo, Statut, Utilisateur_id, Nom, Prenom, Date_naissance, Adresse, Telephone, Email, Photo FROM utilisateur WHERE Utilisateur_Id = ?";
+        $sql = "SELECT Utilisateur_Id, Pseudo, Statut, Utilisateur_id, Nom, Prenom, Date_naissance, Adresse, Telephone, Email, Photo, Role FROM utilisateur WHERE Utilisateur_Id = ?";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$id]);
         $user = $stmt->fetch();
@@ -49,12 +49,20 @@ class Utilisateur
             $this->firstName = $user["Prenom"];
             $this->lastName = $user["Nom"];
             $this->fullName = $user["Prenom"] . " " . $user["Nom"];
+            $this->role = $user["Role"];
+
+            if ($user["Date_naissance"] == null) {
+                $user["Date_naissance"] = "";
+            }
             $this->dateOfBirth = $user["Date_naissance"];
             $this->address = $user["Adresse"];
             $this->statut = $user["Statut"];
             $this->phone = $user["Telephone"];
             $this->email = $user["Email"];
             // $this->reviewCount = 0;
+            if ($user["Photo"] == null) {
+                $user["Photo"] = "";
+            }
             $this->photoUrl = $user["Photo"];
             // $this->preferenceAnimal = $user['Animal_accepte'];
             // $this->preferenceFumeur = $user['Fumeur_accepte'];
@@ -115,7 +123,7 @@ class Utilisateur
     //     return [];
     // }
 
-    public static function checkUserRole(array $roles): string
+    /* public static function checkUserRole(array $roles): string
     {
         $userRole = "";
         $userIsChauffeur = false;
@@ -149,18 +157,18 @@ class Utilisateur
             $userRole = Utilisateur::USER_ROLE_CHAUFFEUR;
         }
         return $userRole;
-    }
+    } */
 
-    public static function loadAllRoles(PDO $pdo): array
+    /* public static function loadAllRoles(PDO $pdo): array
     {
         $sql = "SELECT Role_Id, Libelle FROM role";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([]);
         $roles = $stmt->fetchAll();
         return $roles;
-    }
+    } */
 
-    public static function loadAllRolesMapbyId(PDO $pdo): array
+    /* public static function loadAllRolesMapbyId(PDO $pdo): array
     {
         $allRoles = Utilisateur::loadAllRoles($pdo);
         $roleMap = [];
@@ -168,9 +176,9 @@ class Utilisateur
             $roleMap[$role['Libelle']] = $role['Role_Id'];
         }
         return $roleMap;
-    }
+    } */
 
-    public static function loadIdsFromRoles(string $userRole, PDO $pdo): array
+    /* public static function loadIdsFromRoles(string $userRole, PDO $pdo): array
     {
         if (($userRole == null) || ($userRole == '')) {
             return [];
@@ -184,43 +192,43 @@ class Utilisateur
             array_push($roleIds, $rolesMap[Utilisateur::USER_ROLE_CHAUFFEUR]);
         }
         return $roleIds;
-    }
+    } */
 
-    public function updateUserProfile(string $username, string $lastName, string $firstName, string $address, string $phone, string $email, string $dateOfBirth, int $animalAccepted, int $smokerAccepted, string $preference, float $credit, string $hashedPassword, $photo, PDO $pdo): Result
+    public function updateUserProfile(string $username, string $lastName, string $firstName, string $address, string $phone, string $email, string $dateOfBirth, string $hashedPassword, string $photo, PDO $pdo): Resultat
     {
         try {
             if (($hashedPassword != null) && ($hashedPassword != '')) {
                 if (($photo != null) && ($photo != '')) {
-                    $sql = "UPDATE utilisateur SET Pseudo = ?, Nom = ?, Prenom = ?, Adresse = ?, Telephone = ?, Email = ?, Date_naissance = ?, Animal_accepte = ?, Fumeur_accepte = ?, Autre_preference = ?, Credit = ?, Password = ?, Photo = ? WHERE Utilisateur_Id = ?";
+                    $sql = "UPDATE utilisateur SET Pseudo = ?, Nom = ?, Prenom = ?, Adresse = ?, Telephone = ?, Email = ?, Date_naissance = ?, Password = ?, Photo = ? WHERE Utilisateur_Id = ?";
                     $stmt = $pdo->prepare($sql);
-                    $stmt->execute([$username, $lastName, $firstName, $address, $phone, $email, $dateOfBirth, $animalAccepted, $smokerAccepted, $preference, $credit, $hashedPassword, $photo, $this->getId()]);
+                    $stmt->execute([$username, $lastName, $firstName, $address, $phone, $email, $dateOfBirth, $hashedPassword, $photo, $this->getId()]);
                 } else {
-                    $sql = "UPDATE utilisateur SET Pseudo = ?, Nom = ?, Prenom = ?, Adresse = ?, Telephone = ?, Email = ?, Date_naissance = ?, Animal_accepte = ?, Fumeur_accepte = ?, Autre_preference = ?, Credit = ?, Password = ? WHERE Utilisateur_Id = ?";
+                    $sql = "UPDATE utilisateur SET Pseudo = ?, Nom = ?, Prenom = ?, Adresse = ?, Telephone = ?, Email = ?, Date_naissance = ?, Password = ? WHERE Utilisateur_Id = ?";
                     $stmt = $pdo->prepare($sql);
-                    $stmt->execute([$username, $lastName, $firstName, $address, $phone, $email, $dateOfBirth, $animalAccepted, $smokerAccepted, $preference, $credit, $hashedPassword, $this->getId()]);
+                    $stmt->execute([$username, $lastName, $firstName, $address, $phone, $email, $dateOfBirth, $hashedPassword, $this->getId()]);
                 }
             } else {
                 if (($photo != null) && ($photo != '')) {
-                    $sql = "UPDATE utilisateur SET Pseudo = ?, Nom = ?, Prenom = ?, Adresse = ?, Telephone = ?, Email = ?, Date_naissance = ?, Animal_accepte = ?, Fumeur_accepte = ?, Autre_preference = ?, Credit = ?, Photo = ? WHERE Utilisateur_Id = ?";
+                    $sql = "UPDATE utilisateur SET Pseudo = ?, Nom = ?, Prenom = ?, Adresse = ?, Telephone = ?, Email = ?, Date_naissance = ?, Photo = ? WHERE Utilisateur_Id = ?";
                     $stmt = $pdo->prepare($sql);
-                    $stmt->execute([$username, $lastName, $firstName, $address, $phone, $email, $dateOfBirth, $animalAccepted, $smokerAccepted, $preference, $credit, $photo, $this->getId()]);
+                    $stmt->execute([$username, $lastName, $firstName, $address, $phone, $email, $dateOfBirth, $photo, $this->getId()]);
                 } else {
-                    $sql = "UPDATE utilisateur SET Pseudo = ?, Nom = ?, Prenom = ?, Adresse = ?, Telephone = ?, Email = ?, Date_naissance = ?, Animal_accepte = ?, Fumeur_accepte = ?, Autre_preference = ?, Credit = ? WHERE Utilisateur_Id = ?";
+                    $sql = "UPDATE utilisateur SET Pseudo = ?, Nom = ?, Prenom = ?, Adresse = ?, Telephone = ?, Email = ?, Date_naissance = ? WHERE Utilisateur_Id = ?";
                     $stmt = $pdo->prepare($sql);
-                    $stmt->execute([$username, $lastName, $firstName, $address, $phone, $email, $dateOfBirth, $animalAccepted, $smokerAccepted, $preference, $credit, $this->getId()]);
+                    $stmt->execute([$username, $lastName, $firstName, $address, $phone, $email, $dateOfBirth, $this->getId()]);
                 }
             }
             if ($stmt) {
-                return new Result(true, Utilisateur::RESULT_UPDATE_PROFIL_SUCCESS);
+                return new Resultat(true, Utilisateur::RESULT_UPDATE_PROFIL_SUCCESS);
             }
         } catch (Exception $e) {
-            // echo $e;
-            return new result(false, Utilisateur::RESULT_FAIL);
+            echo $e;
+            return new Resultat(false, Utilisateur::RESULT_FAIL);
         }
-        return new result(false, Utilisateur::RESULT_FAIL);
+        return new Resultat(false, Utilisateur::RESULT_FAIL);
     }
 
-    public function loadVoitures(PDO $pdo): array
+    /* public function loadVoitures(PDO $pdo): array
     {
         $sql_voitures = "SELECT Voiture_Id, Marque, Modele, Immatriculation, Date_premiere_immatriculation, Couleur, Energie, Nb_place FROM voiture WHERE Utilisateur_Id = ?";
         $stmt_voitures = $pdo->prepare($sql_voitures);
@@ -232,7 +240,7 @@ class Utilisateur
             }
         }
         return [];
-    }
+    } */
 
     public function getId(): int
     {
@@ -289,49 +297,9 @@ class Utilisateur
         return $this->statut;
     }
 
-    public function getReviewScore(): float
-    {
-        return $this->reviewScore;
-    }
-
-    public function getReviewCount(): float
-    {
-        return $this->reviewCount;
-    }
-
     public function getPhotoUrl(): string
     {
         return $this->photoUrl;
-    }
-
-    public function getPreferenceAnimal(): bool
-    {
-        return $this->preferenceAnimal;
-    }
-
-    public function getPreferenceAnimalString(): string
-    {
-        return ($this->preferenceAnimal == 0 ? 'Non' : 'Oui');
-    }
-
-    public function getPreferenceFumeur(): bool
-    {
-        return $this->preferenceFumeur;
-    }
-
-    public function getPreferenceFumeurString(): string
-    {
-        return ($this->preferenceFumeur == 0 ? 'Non' : 'Oui');
-    }
-
-    public function getPreference(): string
-    {
-        return $this->preference;
-    }
-
-    public function getCredit(): int
-    {
-        return $this->credit;
     }
 
     public function userIsAdmin(): bool
@@ -341,25 +309,15 @@ class Utilisateur
 
     public function userIsEmploye(): bool
     {
-        return ($this->role == Utilisateur::USER_ROLE_EMPLOYE);
+        return (($this->role == Utilisateur::USER_ROLE_EMPLOYE) || ($this->role == Utilisateur::USER_ROLE_ADMIN));
     }
 
-    public function userIsPassager(): bool
+    public function userIsClient(): bool
     {
-        return ($this->role == Utilisateur::USER_ROLE_PASSAGER);
+        return ($this->role == Utilisateur::USER_ROLE_UITILISATEUR);
     }
 
-    public function userIsChauffeur(): bool
-    {
-        return ($this->role == Utilisateur::USER_ROLE_CHAUFFEUR);
-    }
-
-    public function userIsPassagerChauffeur(): bool
-    {
-        return ($this->role == Utilisateur::USER_ROLE_PASSAGER_ET_CHAUFFEUR);
-    }
-
-    public function updateCredit(float $newCredit, PDO $pdo): bool
+    /* public function updateCredit(float $newCredit, PDO $pdo): bool
     {
         $sql = "UPDATE utilisateur SET Credit = " . $newCredit . " WHERE Utilisateur_Id = " . $this->getId();
         $stmt = $pdo->prepare($sql);
@@ -369,32 +327,9 @@ class Utilisateur
             return true;
         }
         return false;
-    }
+    } */
 
-    public function payerVoyage(float $price, PDO $pdo): bool
-    {
-        $newCredit = $this->getCredit() - $price;
-        if ($this->updateCredit($newCredit, $pdo)) {
-            return true;
-        }
-        return false;
-    }
-
-    public function rembourserVoyage(float $price, PDO $pdo): bool
-    {
-        $newCredit = $this->getCredit() + $price;
-        if ($this->updateCredit($newCredit, $pdo)) {
-            return true;
-        }
-        return false;
-    }
-
-    public function notifier(string $actionType, Voyage $voyage): bool
-    {
-        return true;
-    }
-
-    public function updateNote(float $credit, PDO $pdo): Result
+    public function updateNote(float $credit, PDO $pdo): Resultat
     {
 
         try {
@@ -410,13 +345,13 @@ class Utilisateur
                 $stmt->execute([$avgNote, $this->getId()]);
                 $resultat = $stmt->fetch(PDO::FETCH_ASSOC);
                 if ($resultat) {
-                    return new Result(true, Utilisateur::RESULT_UPDATE_NOTE_SUCCESS);
+                    return new Resultat(true, Utilisateur::RESULT_UPDATE_NOTE_SUCCESS);
                 }
             }
         } catch (Exception $e) {
 
         }
-        return new Result(false, Utilisateur::RESULT_FAIL);
+        return new Resultat(false, Utilisateur::RESULT_FAIL);
     }
 
 }
