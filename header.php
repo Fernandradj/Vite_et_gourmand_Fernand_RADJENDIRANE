@@ -9,7 +9,9 @@ if (isset($_SESSION["id"]) && isset($_SESSION["role"])) {
         $homepage = "accueil_administrateur.php";
     } else if ($role == Utilisateur::USER_ROLE_EMPLOYE) {
         $homepage = "accueil_employe.php";
-    } 
+    } else if ($role == Utilisateur::USER_ROLE_UITILISATEUR) {
+        $homepage = "accueil_utilisateur.php";
+    }
     // else if (($role == Utilisateur::USER_ROLE_PASSAGER) || ($role == Utilisateur::USER_ROLE_CHAUFFEUR) || ($role == Utilisateur::USER_ROLE_PASSAGER_ET_CHAUFFEUR)) {
     //     $homepage = "accueil_utilisateur.php";
     // }
