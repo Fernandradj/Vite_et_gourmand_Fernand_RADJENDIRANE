@@ -8,6 +8,9 @@ $username_err = $useremail_err = $password_err = $confirm_password_err = "";
 $success_msg = "";
 
 $isAdmin = false;
+if (isset($_SESSION["id"]) && isset($_SESSION["role"]) && $_SESSION["role"] == Utilisateur::USER_ROLE_ADMIN) {
+    $isAdmin = true;
+}
 
 // Check if the form was submitted using the POST method
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -66,41 +69,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // If there are no errors, proceed with account creation
         if ($entryValid) {
 
-            $stmt = false;
-            if ($isAdmin) {
-                $sql = "INSERT INTO utilisateur (Pseudo, Email) VALUES (:username, :useremail)";
-                $stmt = $pdo->prepare($sql);
-                $stmt->execute([$username, $useremail]);
-            } else {
-                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-                $sql = "INSERT INTO utilisateur (Pseudo, Password, Email) VALUES (?, ?, ?)";
-                $stmt = $pdo->prepare($sql);
-                $stmt->execute([$username, $hashed_password, $useremail]);
-            }
-
-            if ($stmt) {
-                $sql = "SELECT Utilisateur_Id FROM utilisateur WHERE Pseudo = ? AND Email = ?";
-                $stmt = $pdo->prepare($sql);
-                $stmt->execute([$username, $useremail]);
-                $user = $stmt->fetch();
-
-                if ($user) {
-                    $sql = "SELECT Role_Id FROM role WHERE Libelle = ?";
+            try {
+                $stmt = false;
+                echo "isAdmin: " . $isAdmin;
+                echo "username: " . $username;
+                echo "useremail: " . $useremail;
+                if ($isAdmin) {
+                    $sql = "INSERT INTO utilisateur (Pseudo, Email, Role, Statut) VALUES (?, ?, ?, ?)";
                     $stmt = $pdo->prepare($sql);
-                    $stmt->execute([Utilisateur::USER_ROLE_PASSAGER]);
-                    $defaultRole = $stmt->fetch();
-
-                    if ($defaultRole) {
-                        $sql = "INSERT INTO utilisateur_role (Utilisateur_Id, Role_Id) VALUES (?, ?)";
-                        $stmt = $pdo->prepare($sql);
-                        $stmt->execute([$user['Utilisateur_Id'], $defaultRole['Role_Id']]);
-
-                        // For this example, we'll just set a success message
-                        $success_msg = "Compte crée avec succès! Vous pouvez vous connecter maintenant.";
-
-                        header("refresh:2;url=connexion.php");
-                    }
+                    $stmt->execute([$username, $useremail, Utilisateur::USER_ROLE_EMPLOYE, Utilisateur::USER_STATUT_INACTIF]);
+                    $success_msg = "Compte crée avec succès!";
+                    header("refresh:2;url=compte_utilisateurs.php");
+                } else {
+                    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+                    $sql = "INSERT INTO utilisateur (Pseudo, Password, Email, Role) VALUES (?, ?, ?, ?)";
+                    $stmt = $pdo->prepare($sql);
+                    $stmt->execute([$username, $hashed_password, $useremail, Utilisateur::USER_ROLE_UITILISATEUR]);
+                    $success_msg = "Compte crée avec succès! Vous pouvez vous connecter maintenant.";
+                    header("refresh:2;url=connexion.php");
                 }
+            } catch (PDOException $e) {
+                echo "Erreur de connexion : " . $e->getMessage();
             }
         }
     }

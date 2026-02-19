@@ -12,7 +12,6 @@ if (isset($_GET['token'])) {
 
     // Préparez la requête pour trouver l'utilisateur associé au token et qui n'a pas expiré
     $stmt = $pdo->prepare("SELECT Utilisateur_Id FROM nouveau_mot_de_passe WHERE token = ? AND Date_Expiration >= CURRENT_DATE");
-
     $stmt->execute([$token]);
     $user = $stmt->fetch();
 
@@ -58,8 +57,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['password'], $_POST['co
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         // 5. Mettre à jour le mot de passe 
-        $stmt = $pdo->prepare("UPDATE utilisateur SET password = ? WHERE Utilisateur_Id = ?");
-        $stmt->execute([$hashedPassword, $user['Utilisateur_Id']]);
+        $stmt = $pdo->prepare("UPDATE utilisateur SET password = ?, Statut = ? WHERE Utilisateur_Id = ?");
+        $stmt->execute([$hashedPassword, Utilisateur::USER_STATUT_ACTIF, $user['Utilisateur_Id']]);
 
         // 6. Supprimer le token
         $stmt = $pdo->prepare("DELETE FROM nouveau_mot_de_passe WHERE Utilisateur_Id = ?");

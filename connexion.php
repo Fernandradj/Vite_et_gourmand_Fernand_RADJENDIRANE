@@ -53,13 +53,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $_SESSION["username"] = $username;
                         $_SESSION["role"] = $userRole;
                         if ($userRole == Utilisateur::USER_ROLE_ADMIN) {
-                                    header("location: accueil_administrateur.php");
-                                } else if ($userRole == Utilisateur::USER_ROLE_EMPLOYE) {
-                                    header("location: accueil_employe.php");
-                                } else {
-                                    // header("location: accueil_utilisateur.php");
-                                    header("location: index.php");
-                                }
+                            header("location: accueil_employe.php");
+                        } else if ($userRole == Utilisateur::USER_ROLE_EMPLOYE) {
+                            header("location: accueil_employe.php");
+                        } else {
+                            // header("location: accueil_utilisateur.php");
+                            header("location: index.php");
+                        }
 
                         if (!empty($roles)) {
                             $userRole = Utilisateur::checkUserRole($roles);
@@ -121,7 +121,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <input type="text" id="username" name="username" placeholder="Entrez votre nom d'utilisateur"
                         value="<?php echo htmlspecialchars($username); ?>" required>
                     <?php if (!empty($username_err)): ?>
-                    <span class="error-msg"><?php echo $username_err; ?></span>
+                        <span class="error-msg"><?php echo $username_err; ?></span>
                     <?php endif; ?>
                 </div>
                 <div class="form-group">
@@ -129,7 +129,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <input type="password" id="password" name="password" placeholder="Entrez votre mot de passe"
                         required>
                     <?php if (!empty($password_err)): ?>
-                    <span class="error-msg"><?php echo $password_err; ?></span>
+                        <span class="error-msg"><?php echo $password_err; ?></span>
                     <?php endif; ?>
                 </div>
                 <div class="button-group">
