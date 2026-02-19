@@ -11,38 +11,6 @@ if (isset($_SESSION['id']) || isset($_SESSION['role'])) {
     }
 }
 ?>
-<?php
-if (isset($_POST['action']) && isset($_POST['voyages_selectionnes'])) {
-    // $action = $_POST['action'];
-    // $voyages_selectionnes = $_POST['voyages_selectionnes'];
-
-    // // Convertir le tableau en une chaîne pour la clause IN de la requête SQL
-    // $placeholders = implode(',', array_fill(0, count($voyages_selectionnes), '?'));
-
-
-    /* try {
-
-        if ($action === 'valider') {
-            // Logique pour valider les voyages sélectionnés
-            $stmt = $pdo->prepare("UPDATE voyages SET Statut = 'Validé' WHERE ID_voyage IN ($placeholders)");
-            $stmt->execute($voyages_selectionnes);
-            echo "Les voyages sélectionnés ont été validés.";
-
-        } elseif ($action === 'annuler') {
-            // Logique pour annuler les voyages sélectionnés
-            $stmt = $pdo->prepare("UPDATE voyages SET Statut = 'Annulé' WHERE ID_voyage IN ($placeholders)");
-            $stmt->execute($voyages_selectionnes);
-            echo "Les voyages sélectionnés ont été annulés.";
-        }
-
-    } catch (PDOException $e) {
-        echo "Erreur : " . $e->getMessage();
-    } */
-} else {
-    // echo "Aucune action ou aucun voyage sélectionné.";
-}
-?>
-
 
 <?php include 'html.php' ?>
 

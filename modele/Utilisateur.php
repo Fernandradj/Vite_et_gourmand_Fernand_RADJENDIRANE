@@ -4,6 +4,10 @@ class Utilisateur
 {
     public const USER_STATUT_ACTIF = 'Actif';
 
+    public const USER_STATUT_SUSPENDU = 'Suspendu';
+
+    public const USER_STATUT_INACTIF = 'Inactif';
+
     public const USER_ROLE_ADMIN = 'Administrateur';
     public const USER_ROLE_EMPLOYE = 'Employé';
     public const USER_ROLE_UITILISATEUR = 'Client';
@@ -36,41 +40,43 @@ class Utilisateur
 
     // private float $credit;
 
-    public function __construct(int $id, PDO $pdo)
+    public function __construct(bool $loadData = false, int $id = 0, ?PDO $pdo = null)
     {
         $this->pdo = $pdo;
         $this->id = $id;
-        $sql = "SELECT Utilisateur_Id, Pseudo, Statut, Utilisateur_id, Nom, Prenom, Date_naissance, Adresse, Telephone, Email, Photo, Role FROM utilisateur WHERE Utilisateur_Id = ?";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([$id]);
-        $user = $stmt->fetch();
-        if ($user) {
-            $this->username = $user["Pseudo"];
-            $this->firstName = $user["Prenom"];
-            $this->lastName = $user["Nom"];
-            $this->fullName = $user["Prenom"] . " " . $user["Nom"];
-            $this->role = $user["Role"];
+        if ($loadData && $id != 0) {
+            $sql = "SELECT Utilisateur_Id, Pseudo, Statut, Utilisateur_id, Nom, Prenom, Date_naissance, Adresse, Telephone, Email, Photo, Role FROM utilisateur WHERE Utilisateur_Id = ?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$id]);
+            $user = $stmt->fetch();
+            if ($user) {
+                $this->username = $user["Pseudo"];
+                $this->firstName = $user["Prenom"];
+                $this->lastName = $user["Nom"];
+                $this->fullName = $user["Prenom"] . " " . $user["Nom"];
+                $this->role = $user["Role"];
 
-            if ($user["Date_naissance"] == null) {
-                $user["Date_naissance"] = "";
-            }
-            $this->dateOfBirth = $user["Date_naissance"];
-            $this->address = $user["Adresse"];
-            $this->statut = $user["Statut"];
-            $this->phone = $user["Telephone"];
-            $this->email = $user["Email"];
-            // $this->reviewCount = 0;
-            if ($user["Photo"] == null) {
-                $user["Photo"] = "";
-            }
-            $this->photoUrl = $user["Photo"];
-            // $this->preferenceAnimal = $user['Animal_accepte'];
-            // $this->preferenceFumeur = $user['Fumeur_accepte'];
-            // $this->preference = $user["Autre_preference"];
-            // $this->credit = $user["Credit"];
+                if ($user["Date_naissance"] == null) {
+                    $user["Date_naissance"] = "";
+                }
+                $this->dateOfBirth = $user["Date_naissance"];
+                $this->address = $user["Adresse"];
+                $this->statut = $user["Statut"];
+                $this->phone = $user["Telephone"];
+                $this->email = $user["Email"];
+                // $this->reviewCount = 0;
+                if ($user["Photo"] == null) {
+                    $user["Photo"] = "";
+                }
+                $this->photoUrl = $user["Photo"];
+                // $this->preferenceAnimal = $user['Animal_accepte'];
+                // $this->preferenceFumeur = $user['Fumeur_accepte'];
+                // $this->preference = $user["Autre_preference"];
+                // $this->credit = $user["Credit"];
 
-            // $roles = Utilisateur::loadRoles($id, $pdo);
-            // $this->role = Utilisateur::checkUserRole($roles);
+                // $roles = Utilisateur::loadRoles($id, $pdo);
+                // $this->role = Utilisateur::checkUserRole($roles);
+            }
         }
     }
 
@@ -317,6 +323,73 @@ class Utilisateur
         return ($this->role == Utilisateur::USER_ROLE_UITILISATEUR);
     }
 
+    public function isActif(): bool
+    {
+        return ($this->statut == Utilisateur::USER_STATUT_ACTIF);
+    }
+
+    public static function loadActiveUsers(PDO $pdo): array
+    {
+        $sql = "SELECT Utilisateur_Id, Nom, Prenom, Pseudo, Email, Telephone, Role FROM utilisateur WHERE Statut = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([Utilisateur::USER_STATUT_ACTIF]);
+        $resultats = $stmt->fetchAll();
+        $users = [];
+        if ($resultats) {
+            foreach ($resultats as $key => $user) {
+                array_push($users, new Utilisateur(true, $user['Utilisateur_Id'], $pdo));
+            }
+        }
+        return $users;
+    }
+    
+    public static function loadAllUsers(PDO $pdo): array
+    {
+        $sql = "SELECT Utilisateur_Id, Nom, Prenom, Pseudo, Email, Telephone, Role FROM utilisateur";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([]);
+        $resultats = $stmt->fetchAll();
+        $users = [];
+        if ($resultats) {
+            foreach ($resultats as $key => $user) {
+                array_push($users, new Utilisateur(true, $user['Utilisateur_Id'], $pdo));
+            }
+        }
+        return $users;
+    }
+
+    public static function suspendreUtilisateurs(array $userIds, PDO $pdo): Resultat
+    {
+        try {
+            $sql = "UPDATE utilisateur SET Statut = 'Suspendu' WHERE Utilisateur_Id IN (" . implode(',', array_fill(0, count($userIds), '?')) . ")";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute($userIds);
+            if ($stmt) {
+                return new Resultat(true, "Les utilisateurs ont été suspendus avec succès.");
+            }
+        } catch (PDOException $e) {
+            echo "Erreur de connexion : " . $e->getMessage();
+            return new Resultat(false, "Une erreur s'est produite lors de la suspension de l'utilisateur.");
+        }
+        return new Resultat(false, "Une erreur s'est produite lors de la suspension de l'utilisateur.");
+    }
+
+    /* public static function createEmployee(string $username, string $email, PDO $pdo): Resultat
+    {
+        try {
+            $sql = "INSERT INTO utilisateur (Pseudo, Email, Role) VALUES (?, ?, ?)";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$username, $email, Utilisateur::USER_ROLE_EMPLOYE]);
+            if ($stmt) {
+                return new Resultat(true, "Employé créé avec succès.");
+            }
+        } catch (PDOException $e) {
+            echo "Erreur de connexion : " . $e->getMessage();
+            return new Resultat(false, "Une erreur s'est produite lors de la création de l'employé. Veuillez réessayer ultérieurement.");
+        }
+        return new Resultat(false, "Une erreur s'est produite lors de la création de l'employé. Veuillez réessayer ultérieurement.");
+    } */
+
     /* public function updateCredit(float $newCredit, PDO $pdo): bool
     {
         $sql = "UPDATE utilisateur SET Credit = " . $newCredit . " WHERE Utilisateur_Id = " . $this->getId();
@@ -329,7 +402,7 @@ class Utilisateur
         return false;
     } */
 
-    public function updateNote(float $credit, PDO $pdo): Resultat
+    /* public function updateNote(float $credit, PDO $pdo): Resultat
     {
 
         try {
@@ -352,7 +425,7 @@ class Utilisateur
 
         }
         return new Resultat(false, Utilisateur::RESULT_FAIL);
-    }
+    } */
 
 }
 ?>
