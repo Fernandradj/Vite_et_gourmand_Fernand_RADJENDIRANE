@@ -24,23 +24,22 @@ class CommandeControleur
             $this->annulerCommande($commande_id);
         } else if (isset($_POST['modifier'])) {
             $this->modifierCommande($commande_id);
-        }
-        else if (isset($_POST['donnerAvis'])) {
-            header("Location: http://localhost:3000/Vite_et_gourmand_Fernand_RADJENDIRANE/detail_avis.php?commandeId=" . $commande_id);
-        }
-         else if (isset($_POST['valider'])) {
+        } else if (isset($_POST['donnerAvis'])) {
+            $avisId = Avis::loadAvisIdOfCommande($commande_id, $this->pdo);
+            if ($avisId != 0) {
+                header("Location: http://localhost:3000/Vite_et_gourmand_Fernand_RADJENDIRANE/detail_avis.php?avisId=" . $avisId);
+            } else {
+                header("Location: http://localhost:3000/Vite_et_gourmand_Fernand_RADJENDIRANE/detail_avis.php?commandeId=" . $commande_id);
+            }
+        } else if (isset($_POST['valider'])) {
             $this->validerCommande($commande_id);
-        }
-         else if (isset($_POST['preparer'])) {
+        } else if (isset($_POST['preparer'])) {
             $this->preparerCommande($commande_id);
-        }
-         else if (isset($_POST['expedier'])) {
+        } else if (isset($_POST['expedier'])) {
             $this->expedierCommande($commande_id);
-        }
-         else if (isset($_POST['livrer'])) {
+        } else if (isset($_POST['livrer'])) {
             $this->livrerCommande($commande_id);
-        }
-         else if (isset($_POST['terminer'])) {
+        } else if (isset($_POST['terminer'])) {
             $this->terminerCommande($commande_id);
         }
     }
@@ -140,7 +139,7 @@ class CommandeControleur
         $prix_totale = htmlspecialchars($_POST["prix_totale"]);
         $pret_materiel = (isset($_POST['pret_materiel'])) ? 1 : 0;
         $restitution_materiel = (isset($_POST['restitution_materiel'])) ? 1 : 0;
-        $result = Commande::modifierCommande($commandeId, $addresse_livraison,  $date_heure_liv, $plat_id, $dessert_id, $entree_id, $nombrePersonne, $pret_materiel, $restitution_materiel, $totale_cmd, $prix_liv, $prix_distance, $reduction, $prix_totale, $this->pdo);
+        $result = Commande::modifierCommande($commandeId, $addresse_livraison, $date_heure_liv, $plat_id, $dessert_id, $entree_id, $nombrePersonne, $pret_materiel, $restitution_materiel, $totale_cmd, $prix_liv, $prix_distance, $reduction, $prix_totale, $this->pdo);
         if ($result->getSucceeded()) {
             $this->actionResult->setSucceeded(true);
             $this->actionResult->setMessage($result->getMessage());
