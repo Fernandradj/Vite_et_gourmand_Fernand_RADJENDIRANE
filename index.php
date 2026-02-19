@@ -16,7 +16,7 @@
     <main>
         <div class="home_main_section">
             <p class="home_main_title">Ensemble sur la route, pour un avenir durable</p>
-            <a class="btn_go" href="recherche_menu.php">C'est parti !!!</a>
+            <a class="btn_go" href="menus.php">C'est parti !!!</a>
         </div>
 
         <!-- description entreprise -->

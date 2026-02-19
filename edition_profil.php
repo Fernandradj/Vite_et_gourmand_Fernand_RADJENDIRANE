@@ -8,7 +8,7 @@ $userIsChauffeur = false;
 $userIsPassager = false;
 
 if (isset($_SESSION['id']) && isset($_SESSION['role'])) {
-    $user = new Utilisateur($_SESSION['id'], $pdo);
+    $user = new Utilisateur(true, $_SESSION['id'], $pdo);
 }
 
 // Check if the form was submitted
