@@ -22,7 +22,7 @@ class Suivi
 
     public static function loadSuivisByCommandeId(int $commande_id, PDO $pdo): array
     {
-        $sql = "SELECT Suivi_Id, Numero_commande, Statut, Date FROM suivi WHERE Numero_commande = ?";
+        $sql = "SELECT Suivi_Id, Numero_commande, Statut, Date FROM suivi WHERE Numero_commande = ? ORDER BY Date ASC";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$commande_id]);
         $suivi_list = $stmt->fetchAll();
