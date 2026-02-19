@@ -41,7 +41,7 @@ $editCommande = false;
 $showSearchBar = false;
 
 $utilisateurId = $_SESSION["id"];
-$utilisateur = new Utilisateur($utilisateurId, $pdo);
+$utilisateur = new Utilisateur(true, $utilisateurId, $pdo);
 
 $suivis = [];
 
@@ -86,48 +86,11 @@ if (isset($_GET["menuId"])) {
     $defaultDateTime = $controller->getSelectedDate();
 }
 
-
 ?>
-
-
 
 <body>
 
     <?php include 'header.php' ?>
-
-    <?php if ($commande): ?>
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <div class="timeline-steps aos-init aos-animate" data-aos="fade-up">
-                        <?php foreach ($suivis as $suivi): ?>
-                            <div class="timeline-step">
-                                <div class="timeline-content" data-toggle="popover" data-trigger="hover" data-placement="top"
-                                    title="" data-content="<?php echo $suivi->getStatut(); ?>"
-                                    data-original-title="<?php echo $suivi->getDate(); ?>">
-
-                                    <?php if ($suivi->getDone()): ?>
-                                        <div class="inner-circle done"></div>
-                                        <p class="h6 mt-4 mb-1">
-                                            <?php echo $suivi->getDate(); ?>
-                                        </p>
-                                    <?php else: ?>
-                                        <div class="inner-circle not-done"></div>
-                                        <p class="h6 mt-4 mb-1">
-                                            <?php echo $suivi->getDate(); ?>
-                                        </p>
-                                    <?php endif; ?>
-                                    <p class="h6 text-muted mb-0 mb-lg-0">
-                                        <?php echo $suivi->getStatut(); ?>
-                                    </p>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-    <?php endif; ?>
 
     <!-- main -->
     <main>
@@ -138,11 +101,46 @@ if (isset($_GET["menuId"])) {
             include 'message.php';
 
             if ($statusMessage->getRedirect()) {
+                // echo 'goto ' . $statusMessage->getRedirectURL();
                 header('Refresh: 2; url=' . $statusMessage->getRedirectURL());
                 exit();
             }
             ?>
         </div>
+
+        <?php if ($commande): ?>
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="timeline-steps aos-init aos-animate" data-aos="fade-up">
+                            <?php foreach ($suivis as $suivi): ?>
+                                <div class="timeline-step">
+                                    <div class="timeline-content" data-toggle="popover" data-trigger="hover"
+                                        data-placement="top" title="" data-content="<?php echo $suivi->getStatut(); ?>"
+                                        data-original-title="<?php echo $suivi->getDate(); ?>">
+
+                                        <?php if ($suivi->getDone()): ?>
+                                            <div class="inner-circle done"></div>
+                                            <p class="h6 mt-4 mb-1">
+                                                <?php echo $suivi->getDate(); ?>
+                                            </p>
+                                        <?php else: ?>
+                                            <div class="inner-circle not-done"></div>
+                                            <p class="h6 mt-4 mb-1">
+                                                <?php echo $suivi->getDate(); ?>
+                                            </p>
+                                        <?php endif; ?>
+                                        <p class="h6 text-muted mb-0 mb-lg-0">
+                                            <?php echo $suivi->getStatut(); ?>
+                                        </p>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
 
         <div>
 
@@ -226,11 +224,6 @@ if (isset($_GET["menuId"])) {
                             <div>
 
                                 <p class="showSearchBar"><?php echo $showSearchBar ?></p>
-
-                                <?php if ($commande): ?>
-                                    <p><b>Statut : </b></p>
-                                    <p class="statut"><?php echo $commande->getStatut() ?></p>
-                                <?php endif; ?>
 
                                 <?php if ($displayMaterialOptions): ?>
                                     <p class="pret_materiel">
@@ -433,8 +426,8 @@ if (isset($_GET["menuId"])) {
                                 <?php endif; ?>
 
                                 <?php if (($commande != null) && ($commande->isTermine()) && $utilisateur->userIsClient()): ?>
-                                    <button id="submitBtn" type="submit" class="read_more_btn" name="donnerAvis">Donner un
-                                        avis</button>
+                                    <button id="submitBtn" type="submit" class="read_more_btn"
+                                        name="donnerAvis">Noter</button>
                                 <?php endif; ?>
 
 

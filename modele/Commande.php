@@ -94,7 +94,7 @@ class Commande
             $this->dessert = new Produit(true, $dessert_id, "", "", "", pdo: $pdo);
             
             $utilisateur_id = $commande["Utilisateur_Id"];
-            $this->utilisateur = new Utilisateur($utilisateur_id, $pdo);
+            $this->utilisateur = new Utilisateur(true, $utilisateur_id, $pdo);
 
             $menu_id = $commande["Menu_Id"];
             $this->menu = new Menu($menu_id, $pdo);
@@ -132,6 +132,23 @@ class Commande
         }
         return $commandes;
     }
+    
+    public static function loadAllCommande(PDO $pdo)
+    {
+        $sql = "SELECT Numero_commande, Date_commande, Date_Heure_livraison, Prix_totale, Statut, Pret_materiel, Restitution_materiel, Utilisateur_Id, Menu_Id FROM commande";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        $resultat = $stmt->fetchAll();
+
+        $commandes = [];
+        if ($resultat) {
+            foreach ($resultat as $value) {
+                $new_commande = new Commande($value["Numero_commande"], $pdo);
+                array_push($commandes, $new_commande);
+            }
+        }
+        return $commandes;
+    }
 
     public static function creerSuivi(int $numero_commande, string $statut, PDO $pdo): void
     {
@@ -149,6 +166,7 @@ class Commande
             $stmt->execute(params: [$nombre_pers, $date_cmd, $date_date_heure_liv, $totale_cmd, $prix_liv, $statut, $utilisateur_id, $menu_id, $entree_id, $plat, $dessert_id, $addresse_livraison, $reduction, $prix_totale, $prix_distance_livraison]);
 
             $numero_commande = Commande::loadLastCommandeOfUser($utilisateur_id, $pdo);
+            Menu::reduireQuantiteMenu($menu_id, $pdo);
             Commande::creerSuivi($numero_commande, Commande::COMMANDE_STATUT_COMMANDE, $pdo);
 
             return new Resultat(true, "Votre commande a bien été enregistrée.");
@@ -271,6 +289,11 @@ class Commande
         return $this->nombre_personne;
     }
 
+    public function getDateCommande(): string
+    {
+        return $this->date_commande;
+    }
+
     public function getDateHeureLivraison(): string
     {
         return $this->date_heure_livraison;
@@ -295,6 +318,16 @@ class Commande
     public function getPrixTotale(): string
     {
         return $this->prix_totale;
+    }
+
+    public function getPrixCommande(): string
+    {
+        return $this->prix_commande;
+    }
+
+    public function getReduction(): string
+    {
+        return $this->reduction;
     }
 
     public function getPrixLivraison(): float

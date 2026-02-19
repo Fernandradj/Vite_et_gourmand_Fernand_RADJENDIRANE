@@ -54,13 +54,13 @@ class Menu
                 if ($photo == null) {
                     $photo = "";
                 }
-                $new_produit = new Produit(false, $value["Produit_Id"], $value["Nom"], $value["Type"], $photo,  $pdo);
+                $new_produit = new Produit(false, $value["Produit_Id"], $value["Nom"], $value["Type"], $photo, $pdo);
 
-                if ($value["Type"] == "Entrée") {
+                if ($value["Type"] == Produit::TYPE_ENTREE) {
                     array_push($this->entrees, $new_produit);
-                } elseif ($value["Type"] == "Plat") {
+                } elseif ($value["Type"] == Produit::TYPE_PLAT) {
                     array_push($this->plats, $new_produit);
-                } elseif ($value["Type"] == "Dessert") {
+                } elseif ($value["Type"] == Produit::TYPE_DESSERT) {
                     array_push($this->desserts, $new_produit);
                 }
 
@@ -158,7 +158,35 @@ class Menu
         return $this->desserts;
     }
 
+    public function menuHasEntree(Produit $entree): bool
+    {
+        foreach ($this->entrees as $item) {
+            if ($item->getID() == $entree->getID()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
+    public function menuHasPlat(Produit $plat): bool
+    {
+        foreach ($this->plats as $item) {
+            if ($item->getID() == $plat->getID()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function menuHasDessert(Produit $dessert): bool
+    {
+        foreach ($this->desserts as $item) {
+            if ($item->getID() == $dessert->getID()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
     //  public function getEntree(): string
@@ -204,8 +232,92 @@ class Menu
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$menu_id]);
         }
+    }
 
+    public static function saveMenu(int $menu_id, string $nom, int $nombre_personne_minimum, int $prix_par_personne, string $regime, string $theme, string $description, int $quantite_restante, string $condition, array $entrees, array $plats, array $desserts, PDO $pdo): Resultat
+    {
+        try {
+            $sql = 'UPDATE Menu SET Nom = ?, Nombre_personne_minimum = ?, Prix_par_personne = ?, Regime = ?, Theme = ?, Description = ?, Quantite_restante = ?, Conditions = ? WHERE Menu_Id = ?';
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$nom, $nombre_personne_minimum, $prix_par_personne, $regime, $theme, $description, $quantite_restante, $condition, $menu_id]);
 
+            $sql = 'DELETE FROM Composition WHERE Menu_Id = ?';
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$menu_id]);
+
+            foreach ($entrees as $entree) {
+                $sql = 'INSERT INTO Composition (Menu_Id, Produit_Id) VALUES (?, ?)';
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([$menu_id, $entree]);
+            }
+            foreach ($plats as $plat) {
+                $sql = 'INSERT INTO Composition (Menu_Id, Produit_Id) VALUES (?, ?)';
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([$menu_id, $plat]);
+            }
+            foreach ($desserts as $dessert) {
+                $sql = 'INSERT INTO Composition (Menu_Id, Produit_Id) VALUES (?, ?)';
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([$menu_id, $dessert]);
+            }
+
+            return new Resultat(true, "Le menu a été mis à jour avec succès.");
+        } catch (PDOException $e) {
+            return new Resultat(false, "Erreur lors de la mise à jour du menu : " . $e->getMessage());
+        }
+    }
+    
+    public static function creerMenu(string $nom, int $nombre_personne_minimum, int $prix_par_personne, string $regime, string $theme, string $description, int $quantite_restante, string $condition, array $entrees, array $plats, array $desserts, PDO $pdo): Resultat
+    {
+        try {
+            $sql = 'INSERT INTO Menu (Nom, Nombre_personne_minimum, Prix_par_personne, Regime, Theme, Description, Quantite_restante, Conditions) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$nom, $nombre_personne_minimum, $prix_par_personne, $regime, $theme, $description, $quantite_restante, $condition]);
+            $menu_id = Menu::loadLastMenuCreated($pdo);
+            foreach ($entrees as $entree) {
+                $sql = 'INSERT INTO Composition (Menu_Id, Produit_Id) VALUES (?, ?)';
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([$menu_id, $entree]);
+            }
+            foreach ($plats as $plat) {
+                $sql = 'INSERT INTO Composition (Menu_Id, Produit_Id) VALUES (?, ?)';
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([$menu_id, $plat]);
+            }
+            foreach ($desserts as $dessert) {
+                $sql = 'INSERT INTO Composition (Menu_Id, Produit_Id) VALUES (?, ?)';
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([$menu_id, $dessert]);
+            }
+
+            return new Resultat(true, "Le menu a été crée avec succès.");
+        } catch (PDOException $e) {
+            return new Resultat(false, "Erreur lors de la création du menu : " . $e->getMessage());
+        }
+    }
+
+    public static function loadLastMenuCreated(PDO $pdo): int
+    {
+        $sql = "SELECT Menu_Id FROM Menu ORDER BY Menu_Id DESC LIMIT 1";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([]);
+        $resultat = $stmt->fetch();
+        if ($resultat) {
+            return $resultat["Menu_Id"];
+        }
+        return 0;
+    }
+
+    public static function loadMenuIdByName(string $nom, PDO $pdo): int
+    {
+        $sql = "SELECT Menu_Id FROM Menu WHERE Nom = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$nom]);
+        $resultat = $stmt->fetch();
+        if ($resultat) {
+            return $resultat["Menu_Id"];
+        }
+        return 0;
     }
 }
 
