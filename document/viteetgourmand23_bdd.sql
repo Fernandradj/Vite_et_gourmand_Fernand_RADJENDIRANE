@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : jeu. 19 fév. 2026 à 23:26
+-- Généré le : jeu. 19 fév. 2026 à 23:42
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `viteetgourmand`
+-- Base de données : `viteetgourmand23_bdd`
 --
 
 -- --------------------------------------------------------
