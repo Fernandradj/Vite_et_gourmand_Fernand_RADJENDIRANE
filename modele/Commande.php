@@ -29,6 +29,9 @@ class Commande
     public const ACTION_LIVRER = "Livrer";
     public const ACTION_TERMINER = "Terminer";
     public const ACTION_NOTER = "Noter";
+    
+    public const DATA_TYPE_PRIX = "prix";
+    public const DATA_TYPE_NB_CMD = "nbCommande";
 
     private PDO $pdo;
     private int $numero_commande;
@@ -92,7 +95,7 @@ class Commande
             $this->plat = new Produit(true, $plat_id, "", "", "", pdo: $pdo);
             $dessert_id = $commande["Dessert_Id"];
             $this->dessert = new Produit(true, $dessert_id, "", "", "", pdo: $pdo);
-            
+
             $utilisateur_id = $commande["Utilisateur_Id"];
             $this->utilisateur = new Utilisateur(true, $utilisateur_id, $pdo);
 
@@ -106,13 +109,14 @@ class Commande
     {
         return $this->menu;
     }
-    
+
     public function getSuivis(): array
     {
         return $this->suivis;
     }
 
-    public function getFullSuivi(): array {
+    public function getFullSuivi(): array
+    {
         return Suivi::loadFullSuivi($this);
     }
 
@@ -132,7 +136,7 @@ class Commande
         }
         return $commandes;
     }
-    
+
     public static function loadAllCommande(PDO $pdo)
     {
         $sql = "SELECT Numero_commande, Date_commande, Date_Heure_livraison, Prix_totale, Statut, Pret_materiel, Restitution_materiel, Utilisateur_Id, Menu_Id FROM commande";
@@ -159,7 +163,7 @@ class Commande
 
     public static function saveCommande(int $nombre_pers, string $date_cmd, string $date_date_heure_liv, float $totale_cmd, float $prix_liv, float $prix_distance_livraison, float $reduction, float $prix_totale, string $statut, int $utilisateur_id, int $menu_id, int $entree_id, int $plat, int $dessert_id, string $addresse_livraison, PDO $pdo): Resultat
     {
-        $sql = "INSERT INTO Commande (`Nombre_personne`, `Date_commande`, `Date_Heure_livraison`, `Prix_commande`, `Prix_livraison`, `Statut`, `Utilisateur_Id`, `Menu_Id`, `Entree_Id`, `Plat_Id`, `Dessert_Id`, `Adresse_livraison`, `Reduction`, `Prix_totale`, `Prix_distance_livraison`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,? )";
+        $sql = "INSERT INTO commande (`Nombre_personne`, `Date_commande`, `Date_Heure_livraison`, `Prix_commande`, `Prix_livraison`, `Statut`, `Utilisateur_Id`, `Menu_Id`, `Entree_Id`, `Plat_Id`, `Dessert_Id`, `Adresse_livraison`, `Reduction`, `Prix_totale`, `Prix_distance_livraison`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,? )";
         $stmt = $pdo->prepare(query: $sql);
 
         try {
@@ -171,13 +175,14 @@ class Commande
 
             return new Resultat(true, "Votre commande a bien été enregistrée.");
         } catch (PDOException $e) {
+            echo $e;
             return new Resultat(false, "Une erreur s'est produite lors de l'enregistrement, veuillez réessayer plus tard.");
         }
     }
 
     public static function annulerCommande(int $numero_commande, PDO $pdo): Resultat
     {
-        $sql = "UPDATE Commande SET Statut = ? WHERE Numero_commande = ?";
+        $sql = "UPDATE commande SET Statut = ? WHERE Numero_commande = ?";
         $stmt = $pdo->prepare(query: $sql);
 
         try {
@@ -193,7 +198,7 @@ class Commande
 
     public static function modifierCommande(int $numero_commande, string $adresse, string $dateHeure, int $plat_id, int $dessert_id, int $entree_id, int $nombrePersonne, int $pret_materiel, int $restitution_materiel, float $totale_cmd, float $prix_liv, float $prix_distance_livraison, float $reduction, float $prix_totale, PDO $pdo): Resultat
     {
-        $sql = "UPDATE Commande SET Adresse_livraison = ?, Date_Heure_livraison = ?, Plat_Id = ?, Dessert_Id = ?, Entree_Id = ?, Nombre_personne = ?, Pret_materiel = ?, Restitution_materiel = ?, Prix_commande = ?, Prix_livraison = ?, Prix_distance_livraison = ?, Reduction = ?, Prix_totale = ? WHERE Numero_commande = ?";
+        $sql = "UPDATE commande SET Adresse_livraison = ?, Date_Heure_livraison = ?, Plat_Id = ?, Dessert_Id = ?, Entree_Id = ?, Nombre_personne = ?, Pret_materiel = ?, Restitution_materiel = ?, Prix_commande = ?, Prix_livraison = ?, Prix_distance_livraison = ?, Reduction = ?, Prix_totale = ? WHERE Numero_commande = ?";
         $stmt = $pdo->prepare(query: $sql);
 
         try {
@@ -206,7 +211,7 @@ class Commande
 
     public static function validerCommande(int $numero_commande, PDO $pdo): Resultat
     {
-        $sql = "UPDATE Commande SET Statut = ? WHERE Numero_commande = ?";
+        $sql = "UPDATE commande SET Statut = ? WHERE Numero_commande = ?";
         $stmt = $pdo->prepare(query: $sql);
 
         try {
@@ -220,7 +225,7 @@ class Commande
 
     public static function preparerCommande(int $numero_commande, PDO $pdo): Resultat
     {
-        $sql = "UPDATE Commande SET Statut = ? WHERE Numero_commande = ?";
+        $sql = "UPDATE commande SET Statut = ? WHERE Numero_commande = ?";
         $stmt = $pdo->prepare(query: $sql);
 
         try {
@@ -234,7 +239,7 @@ class Commande
 
     public static function expedierCommande(int $numero_commande, PDO $pdo): Resultat
     {
-        $sql = "UPDATE Commande SET Statut = ? WHERE Numero_commande = ?";
+        $sql = "UPDATE commande SET Statut = ? WHERE Numero_commande = ?";
         $stmt = $pdo->prepare(query: $sql);
 
         try {
@@ -248,7 +253,7 @@ class Commande
 
     public static function livrerCommande(int $numero_commande, int $pret_materiel, PDO $pdo): Resultat
     {
-        $sql = "UPDATE Commande SET Statut = ?, Pret_materiel = ? WHERE Numero_commande = ?";
+        $sql = "UPDATE commande SET Statut = ?, Pret_materiel = ? WHERE Numero_commande = ?";
         $stmt = $pdo->prepare(query: $sql);
 
         try {
@@ -265,7 +270,7 @@ class Commande
     }
     public static function terminerCommande(int $numero_commande, int $pret_materiel, PDO $pdo): Resultat
     {
-        $sql = "UPDATE Commande SET Statut = ?, Restitution_materiel = ? WHERE Numero_commande = ?";
+        $sql = "UPDATE commande SET Statut = ?, Restitution_materiel = ? WHERE Numero_commande = ?";
         $stmt = $pdo->prepare(query: $sql);
         try {
             $restitution_materiel = 0;
@@ -389,11 +394,6 @@ class Commande
         return ($this->statut == Commande::COMMANDE_STATUS_EXPEDIE);
     }
 
-    public function isLivre(): bool
-    {
-        return ($this->statut == Commande::COMMANDE_STATUS_LIVRE);
-    }
-
     public function isAttenteRetour(): bool
     {
         return ($this->statut == Commande::COMMANDE_STATUS_ATTENTE_RETOUR);
@@ -415,6 +415,53 @@ class Commande
             return $resultat["Numero_commande"];
         }
         return 0;
+    }
+
+    public static function loadChiffresMenus(string $menu, string $startDate, string $endDate, PDO $pdo): array
+    {
+        $sql = "SELECT commande.Menu_Id menuId, menu.Nom menuNom, COUNT(Numero_commande) nbCommande, SUM(Prix_totale) prix FROM commande JOIN menu ON commande.Menu_Id = menu.Menu_Id WHERE Statut = ?";
+        $params = [Commande::COMMANDE_STATUS_TERMINE];
+        if (($startDate != null) && ($startDate != "")) {
+            $sql .= " AND Date_commande >= ?";
+            array_push($params, $startDate);
+        }
+        if (($endDate != null) && ($endDate != "")) {
+            $sql .= " AND Date_commande <= ?";
+            array_push($params, $endDate);
+        }
+        if (($menu != null) && ($menu != "")) {
+            $sql .= " AND menu.Nom = ?";
+            array_push($params, $menu);
+        }
+        $sql .= " GROUP BY commande.Menu_Id, menu.Nom";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(params: $params);
+        $resultat = $stmt->fetchAll();
+        $data = [];
+        if ($resultat) {
+            foreach ($resultat as $key => $value) {
+                // echo $value['menuNom'] . ' - ' . $value['prix'] . ' - ' . $value['nbCommande'];
+                $input = [];
+                $input['prix'] = $value['prix'];
+                $input['nbCommande'] = $value['nbCommande'];
+                $data[$value['menuNom']] = $input;
+            }
+        }
+        return $data;
+    }
+
+    public static function loadMenus(PDO $pdo): array {
+        $sql = "SELECT menu.Nom menuNom FROM commande JOIN menu ON commande.Menu_Id = menu.Menu_Id WHERE Statut = ? GROUP BY menu.Nom";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(params: [Commande::COMMANDE_STATUS_TERMINE]);
+        $resultat = $stmt->fetchAll();
+        $data = [];
+        if ($resultat) {
+            foreach ($resultat as $key => $value) {
+                array_push($data, $value['menuNom']);
+            }
+        }
+        return $data;
     }
 }
 
