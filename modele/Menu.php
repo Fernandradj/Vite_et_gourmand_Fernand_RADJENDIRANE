@@ -6,7 +6,7 @@ class Menu
     private int $menu_id;
     private string $nom;
     private int $nombre_personne_minimum;
-    private int $prix_par_personne;
+    private float $prix_par_personne;
     private string $regime;
     private string $theme;
     private string $description;
@@ -43,7 +43,7 @@ class Menu
         }
 
 
-        $sql = "SELECT Produit.Produit_Id, Nom, Type, Photo FROM produit JOIN Composition ON produit.Produit_Id=composition.Produit_Id WHERE Menu_Id = ?";
+        $sql = "SELECT produit.Produit_Id, Nom, Type, Photo FROM produit JOIN composition ON produit.Produit_Id=composition.Produit_Id WHERE Menu_Id = ?";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$id]);
         $produit_list = $stmt->fetchAll();
@@ -90,7 +90,7 @@ class Menu
 
         return $this->nombre_personne_minimum;
     }
-    public function getPrix_par_personne(): string
+    public function getPrix_par_personne(): float
     {
 
         return $this->prix_par_personne;
@@ -220,7 +220,7 @@ class Menu
     {
 
         // 1. get quantity
-        $sql = "SELECT Quantite_restante FROM Menu WHERE Menu_Id =?";
+        $sql = "SELECT Quantite_restante FROM menu WHERE Menu_Id =?";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$menu_id]);
         $resultat = $stmt->fetch();
@@ -228,35 +228,35 @@ class Menu
             $quantite_restante = $resultat["Quantite_restante"] - 1;
 
             // 2. update with new quantity
-            $sql = "UPADTE Menu SET = Quantite_restante = " . $quantite_restante . " WHERE Menu_Id = ? ";
+            $sql = "UPDATE menu SET Quantite_restante = ? WHERE Menu_Id = ?";
             $stmt = $pdo->prepare($sql);
-            $stmt->execute([$menu_id]);
+            $stmt->execute([$quantite_restante, $menu_id]);
         }
     }
 
-    public static function saveMenu(int $menu_id, string $nom, int $nombre_personne_minimum, int $prix_par_personne, string $regime, string $theme, string $description, int $quantite_restante, string $condition, array $entrees, array $plats, array $desserts, PDO $pdo): Resultat
+    public static function saveMenu(int $menu_id, string $nom, int $nombre_personne_minimum, float $prix_par_personne, string $regime, string $theme, string $description, int $quantite_restante, string $condition, array $entrees, array $plats, array $desserts, PDO $pdo): Resultat
     {
         try {
-            $sql = 'UPDATE Menu SET Nom = ?, Nombre_personne_minimum = ?, Prix_par_personne = ?, Regime = ?, Theme = ?, Description = ?, Quantite_restante = ?, Conditions = ? WHERE Menu_Id = ?';
+            $sql = 'UPDATE menu SET Nom = ?, Nombre_personne_minimum = ?, Prix_par_personne = ?, Regime = ?, Theme = ?, Description = ?, Quantite_restante = ?, Conditions = ? WHERE Menu_Id = ?';
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$nom, $nombre_personne_minimum, $prix_par_personne, $regime, $theme, $description, $quantite_restante, $condition, $menu_id]);
 
-            $sql = 'DELETE FROM Composition WHERE Menu_Id = ?';
+            $sql = 'DELETE FROM composition WHERE Menu_Id = ?';
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$menu_id]);
 
             foreach ($entrees as $entree) {
-                $sql = 'INSERT INTO Composition (Menu_Id, Produit_Id) VALUES (?, ?)';
+                $sql = 'INSERT INTO composition (Menu_Id, Produit_Id) VALUES (?, ?)';
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute([$menu_id, $entree]);
             }
             foreach ($plats as $plat) {
-                $sql = 'INSERT INTO Composition (Menu_Id, Produit_Id) VALUES (?, ?)';
+                $sql = 'INSERT INTO composition (Menu_Id, Produit_Id) VALUES (?, ?)';
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute([$menu_id, $plat]);
             }
             foreach ($desserts as $dessert) {
-                $sql = 'INSERT INTO Composition (Menu_Id, Produit_Id) VALUES (?, ?)';
+                $sql = 'INSERT INTO composition (Menu_Id, Produit_Id) VALUES (?, ?)';
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute([$menu_id, $dessert]);
             }
@@ -267,25 +267,25 @@ class Menu
         }
     }
     
-    public static function creerMenu(string $nom, int $nombre_personne_minimum, int $prix_par_personne, string $regime, string $theme, string $description, int $quantite_restante, string $condition, array $entrees, array $plats, array $desserts, PDO $pdo): Resultat
+    public static function creerMenu(string $nom, int $nombre_personne_minimum, float $prix_par_personne, string $regime, string $theme, string $description, int $quantite_restante, string $condition, array $entrees, array $plats, array $desserts, PDO $pdo): Resultat
     {
         try {
-            $sql = 'INSERT INTO Menu (Nom, Nombre_personne_minimum, Prix_par_personne, Regime, Theme, Description, Quantite_restante, Conditions) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+            $sql = 'INSERT INTO menu (Nom, Nombre_personne_minimum, Prix_par_personne, Regime, Theme, Description, Quantite_restante, Conditions) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$nom, $nombre_personne_minimum, $prix_par_personne, $regime, $theme, $description, $quantite_restante, $condition]);
             $menu_id = Menu::loadLastMenuCreated($pdo);
             foreach ($entrees as $entree) {
-                $sql = 'INSERT INTO Composition (Menu_Id, Produit_Id) VALUES (?, ?)';
+                $sql = 'INSERT INTO composition (Menu_Id, Produit_Id) VALUES (?, ?)';
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute([$menu_id, $entree]);
             }
             foreach ($plats as $plat) {
-                $sql = 'INSERT INTO Composition (Menu_Id, Produit_Id) VALUES (?, ?)';
+                $sql = 'INSERT INTO composition (Menu_Id, Produit_Id) VALUES (?, ?)';
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute([$menu_id, $plat]);
             }
             foreach ($desserts as $dessert) {
-                $sql = 'INSERT INTO Composition (Menu_Id, Produit_Id) VALUES (?, ?)';
+                $sql = 'INSERT INTO composition (Menu_Id, Produit_Id) VALUES (?, ?)';
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute([$menu_id, $dessert]);
             }
@@ -298,7 +298,7 @@ class Menu
 
     public static function loadLastMenuCreated(PDO $pdo): int
     {
-        $sql = "SELECT Menu_Id FROM Menu ORDER BY Menu_Id DESC LIMIT 1";
+        $sql = "SELECT Menu_Id FROM menu ORDER BY Menu_Id DESC LIMIT 1";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([]);
         $resultat = $stmt->fetch();
@@ -310,7 +310,7 @@ class Menu
 
     public static function loadMenuIdByName(string $nom, PDO $pdo): int
     {
-        $sql = "SELECT Menu_Id FROM Menu WHERE Nom = ?";
+        $sql = "SELECT Menu_Id FROM menu WHERE Nom = ?";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$nom]);
         $resultat = $stmt->fetch();
