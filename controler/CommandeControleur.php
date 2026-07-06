@@ -129,7 +129,6 @@ class CommandeControleur
         $addresse_livraison = htmlspecialchars($_POST['adresse']);
         $plat_id = htmlspecialchars($_POST["plat"]);
         $dessert_id = htmlspecialchars($_POST["dessert"]);
-        echo $dessert_id;
         $entree_id = htmlspecialchars($_POST["entree"]);
         $nombrePersonne = htmlspecialchars($_POST["nb_personne"]);
         $totale_cmd = htmlspecialchars($_POST["totale_commande"]);

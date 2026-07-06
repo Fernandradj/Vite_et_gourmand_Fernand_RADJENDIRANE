@@ -418,37 +418,116 @@ class Commande
         return 0;
     }
 
-   
     public static function loadChiffresMenus(string $menu, string $startDate, string $endDate, PDO $pdo): array
     {
-        $sql = "SELECT commande.Menu_Id menuId, menu.Nom menuNom, COUNT(Numero_commande) nbCommande, SUM(Prix_totale) prix FROM commande JOIN menu ON commande.Menu_Id = menu.Menu_Id WHERE Statut = ?";
-        $params = [Commande::COMMANDE_STATUS_TERMINE];
-        if (($startDate != null) && ($startDate != "")) {
-            $sql .= " AND Date_commande >= ?";
-            array_push($params, $startDate);
-        }
-        if (($endDate != null) && ($endDate != "")) {
-            $sql .= " AND Date_commande <= ?";
-            array_push($params, $endDate);
-        }
-        if (($menu != null) && ($menu != "")) {
-            $sql .= " AND menu.Nom = ?";
-            array_push($params, $menu);
-        }
-        $sql .= " GROUP BY commande.Menu_Id, menu.Nom";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute(params: $params);
-        $resultat = $stmt->fetchAll();
         $data = [];
-        if ($resultat) {
-            foreach ($resultat as $key => $value) {
-                // echo $value['menuNom'] . ' - ' . $value['prix'] . ' - ' . $value['nbCommande'];
-                $input = [];
-                $input['prix'] = $value['prix'];
-                $input['nbCommande'] = $value['nbCommande'];
-                $data[$value['menuNom']] = $input;
+        $client = new MongoDB\Driver\Manager("mongodb://localhost:27017");
+        // $db = $client->Vite_et_Gourmand;
+        // $collection = $db->Vente;
+        // $ventes = $collection->find();
+        // foreach ($ventes as $vente) {
+        //     // echo "name : " . $vente['name'] . " nb : " . $vente['nombreDeVentes'] . " ca : " . $vente['chiffreAffaire'] . "<br>";
+        // $input = [];
+        // $input['prix'] = $vente['chiffreAffaire'];
+        // $input['nbCommande'] = $vente['nombreDeVentes'];
+        // $data[$vente['name']] = $input;
+        // }
+
+        $matchFilter = [];
+
+        // Filtre sur le nom (si non vide)
+        if (!empty($menu)) {
+            $matchFilter['Menu_nom'] = $menu;
+        }
+
+        // Filtre sur les dates (on gère le cas où l'une, l'autre, ou les deux sont remplies)
+        if (!empty($startDate) || !empty($endDate)) {
+            $matchFilter['Date_commande'] = [];
+
+            if (!empty($startDate)) {
+                $matchFilter['Date_commande']['$gte'] = new MongoDB\BSON\UTCDateTime(strtotime($startDate) * 1000);
+            }
+
+            if (!empty($endDate)) {
+                $matchFilter['Date_commande']['$lte'] = new MongoDB\BSON\UTCDateTime(strtotime($endDate. " 23:59:59") * 1000);
             }
         }
+
+
+        // 3. Construction du pipeline d'agrégation
+        $pipeline = [];
+
+        // On ajoute l'étape $match SEULEMENT si au moins un filtre a été saisi
+        if (!empty($matchFilter)) {
+            $pipeline[] = ['$match' => $matchFilter];
+        }
+
+        // L'étape $group reste requise pour faire la somme et le regroupement
+        $pipeline[] = [
+            '$group' => [
+                '_id' => '$Menu_nom',
+                'total_docs' => ['$sum' => 1],
+                'somme_prix' => ['$sum' => '$Prix_totale']
+            ]
+        ];
+
+
+        // 4. Exécution de la commande
+        $command = new MongoDB\Driver\Command([
+            'aggregate' => 'Commande',
+            'pipeline' => $pipeline,
+            'cursor' => new stdClass(),
+        ]);
+
+        try {
+            $cursor = $client->executeCommand('Vite_et_Gourmand', $command);
+
+            // 5. Affichage des résultats
+            foreach ($cursor as $document) {
+                // Si aucun filtre n'est mis, _id affichera chaque nom présent dans la base
+                // echo "<h3>Résultat pour le groupe : " . ($document->_id ?? 'Sans nom') . "</h3>";
+                // echo "Nombre d'articles : " . $document->total_docs . "<br>";
+                // echo "Somme totale des prix : " . $document->somme_prix . " €<br>";
+                // echo "-----------------------------------<br>";
+                $input = [];
+                $input['prix'] = $document->somme_prix;
+                $input['nbCommande'] = $document->total_docs;
+                $data[$document->_id] = $input;
+            }
+        } catch (MongoDB\Driver\Exception\Exception $e) {
+            echo "Erreur : " . $e->getMessage();
+        }
+
+
+
+        // $sql = "SELECT commande.Menu_Id menuId, menu.Nom menuNom, COUNT(Numero_commande) nbCommande, SUM(Prix_totale) prix FROM commande JOIN menu ON commande.Menu_Id = menu.Menu_Id WHERE Statut = ?";
+        // $params = [Commande::COMMANDE_STATUS_TERMINE];
+        // if (($startDate != null) && ($startDate != "")) {
+        //     $sql .= " AND Date_commande >= ?";
+        //     array_push($params, $startDate);
+        // }
+        // if (($endDate != null) && ($endDate != "")) {
+        //     $sql .= " AND Date_commande <= ?";
+        //     array_push($params, $endDate);
+        // }
+        // if (($menu != null) && ($menu != "")) {
+        //     $sql .= " AND menu.Nom = ?";
+        //     array_push($params, $menu);
+        // }
+        // $sql .= " GROUP BY commande.Menu_Id, menu.Nom";
+        // $stmt = $pdo->prepare($sql);
+        // $stmt->execute(params: $params);
+        // $resultat = $stmt->fetchAll();
+
+        // if ($resultat) {
+        //     foreach ($resultat as $key => $value) {
+        //         // echo $value['menuNom'] . ' - ' . $value['prix'] . ' - ' . $value['nbCommande'];
+        //         $input = [];
+        //         $input['prix'] = $value['prix'];
+        //         $input['nbCommande'] = $value['nbCommande'];
+        //         $data[$value['menuNom']] = $input;
+        //     }
+        // }
         return $data;
     }
 
