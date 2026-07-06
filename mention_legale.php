@@ -20,10 +20,10 @@
 
             <h2>1. PRÉSENTATION DU SITE</h2>
             <p>En vertu de l’article 6 de la loi n°2004-575 du 21 juin 2004 pour la confiance dans l’économie numérique,
-                il est précisé aux utilisateurs du site https://ecorideprojet23.alwaysdata.net/ l’identité des
-                différents intervenants dans le cadre de sa réalisation et de son suivi :</p>
+                il est précisé aux utilisateurs du site https://viteetgourmand23.alwaysdata.net/
+                l’identité des différents intervenants dans le cadre de sa réalisation et de son suivi :</p>
             <ul>
-                <li>Propriétaire : Eco Ride - 36252187900034, SAS au capital de 10 000,00€. Le propriétaire du
+                <li>Propriétaire : Vite et Gourmand - 36252187900034, SAS au capital de 10 000,00€. Le propriétaire du
                     site internet est joignable à cette adresse : ferno6randy@gmail.com</li>
                 <li>Adresse : 1 Rue de la République, 75010 Paris, France</li>
                 <li>Créateur du site : Fernand RADJENDIRANE</li>
@@ -40,7 +40,7 @@
             <h2>2. CONDITIONS GÉNÉRALES D’UTILISATION</h2>
 
             <p>
-                L’utilisation du site https://ecorideprojet23.alwaysdata.net/ implique l’acceptation pleine et entière
+                L’utilisation du site https://viteetgourmand23.alwaysdata.net/ implique l’acceptation pleine et entière
                 des présentes conditions d’utilisation, susceptibles d’être modifiées ou complétées à tout moment. Les
                 utilisateurs sont donc invités à les consulter régulièrement.</p>
             <p>Le site est normalement accessible à tout moment. Une interruption pour maintenance technique peut
@@ -54,9 +54,10 @@
                 informations.
             </p>
             <p>
-                Tous les informations indiquées sur le site https://ecorideprojet23.alwaysdata.net/ sont données à titre
+                Tous les informations indiquées sur le site https://viteetgourmand23.alwaysdata.net/ sont données à
+                titre
                 indicatif, et sont susceptibles d’évoluer. Aussi, toutes les informations indiquées sur le site
-                https://ecorideprojet23.alwaysdata.net/ sont données à titre indicatif, et sont susceptibles de changer
+                https://viteetgourmand23.alwaysdata.net/ sont données à titre indicatif, et sont susceptibles de changer
                 ou d’évoluer sans préavis.
             </p>
             <p>Si vous constatez une lacune, erreur ou ce qui parait être un dysfonctionnement, merci de bien vouloir le
@@ -99,7 +100,7 @@
 
             <h2>6. GESTION DES DONNÉES PERSONNELLES</h2>
             <p>Le responsable du traitement des données personnelles est : Fernand RADJENDIRANE.</p>
-            <p>Les données personnelles collectées via le site https://ecorideprojet23.alwaysdata.net/ sont nécessaires
+            <p>Les données personnelles collectées via le site https://viteetgourmand23.alwaysdata.net/ sont nécessaires
                 pour :</p>
             <ul>
                 <li>répondre aux demandes des utilisateurs (formulaires de contact, inscriptions, devis, etc.) ;</li>
@@ -139,7 +140,7 @@
                 par Always Data.</p>
 
             <h2>7. POLITIQUE DE COOKIES</h2>
-            <p>La navigation sur le site https://ecorideprojet23.alwaysdata.net/ est susceptible de provoquer
+            <p>La navigation sur le site https://viteetgourmand23.alwaysdata.net/ est susceptible de provoquer
                 l’installation de cookie(s) sur l’ordinateur de l’utilisateur.</p>
             <p>Un cookie est un petit fichier texte enregistré sur le disque dur de votre terminal (ordinateur,
                 tablette,
@@ -182,7 +183,7 @@
             </ul>
 
             <h2>8. LIENS HYPERTEXTES</h2>
-            <p>Le site https://ecorideprojet23.alwaysdata.net/ peut contenir un certain nombre de liens
+            <p>Le site https://viteetgourmand23.alwaysdata.net/ peut contenir un certain nombre de liens
                 hypertextes
                 vers d’autres sites, mis en place avec l’autorisation de Fernand RADJENDIRANE.</p>
             <p>Cependant, Fernand RADJENDIRANE n’a pas la possibilité de vérifier le contenu des sites ainsi
@@ -199,7 +200,7 @@
                 téléchargement.</p>
 
             <h2>9. DROIT APPLICABLE – ATTRIBUTION DE JURIDICTION</h2>
-            <p>Les présentes conditions du site https://ecorideprojet23.alwaysdata.net/ sont régies par les lois
+            <p>Les présentes conditions du site  https://viteetgourmand23.alwaysdata.net/ sont régies par les lois
                 françaises et toute contestation ou litiges qui pourraient naître de l&#39;interprétation ou de
                 l&#39;exécution de celles-ci seront de la compétence exclusive des tribunaux dont dépend le
                 siège social de la société Eco Ride. La langue de référence, pour le règlement de contentieux
