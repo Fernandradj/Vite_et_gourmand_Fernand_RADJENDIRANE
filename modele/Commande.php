@@ -29,7 +29,7 @@ class Commande
     public const ACTION_LIVRER = "Livrer";
     public const ACTION_TERMINER = "Terminer";
     public const ACTION_NOTER = "Noter";
-    
+
     public const DATA_TYPE_PRIX = "prix";
     public const DATA_TYPE_NB_CMD = "nbCommande";
 
@@ -97,7 +97,8 @@ class Commande
             $this->dessert = new Produit(true, $dessert_id, "", "", "", pdo: $pdo);
 
             $utilisateur_id = $commande["Utilisateur_Id"];
-            $this->utilisateur = new Utilisateur(true, $utilisateur_id, $pdo);
+            $userDAO = new UtilisateurDAO($pdo);
+            $this->utilisateur = $userDAO->getById(true, $utilisateur_id);
 
             $menu_id = $commande["Menu_Id"];
             $this->menu = new Menu($menu_id, $pdo);
@@ -417,6 +418,7 @@ class Commande
         return 0;
     }
 
+   
     public static function loadChiffresMenus(string $menu, string $startDate, string $endDate, PDO $pdo): array
     {
         $sql = "SELECT commande.Menu_Id menuId, menu.Nom menuNom, COUNT(Numero_commande) nbCommande, SUM(Prix_totale) prix FROM commande JOIN menu ON commande.Menu_Id = menu.Menu_Id WHERE Statut = ?";
@@ -450,7 +452,8 @@ class Commande
         return $data;
     }
 
-    public static function loadMenus(PDO $pdo): array {
+    public static function loadMenus(PDO $pdo): array
+    {
         $sql = "SELECT menu.Nom menuNom FROM commande JOIN menu ON commande.Menu_Id = menu.Menu_Id WHERE Statut = ? GROUP BY menu.Nom";
         $stmt = $pdo->prepare($sql);
         $stmt->execute(params: [Commande::COMMANDE_STATUS_TERMINE]);

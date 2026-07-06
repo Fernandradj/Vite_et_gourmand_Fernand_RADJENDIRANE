@@ -19,7 +19,8 @@ class UtilisateurControleur
     {
         if (isset($_POST['users']) && !empty($_POST['users'])) {
             $userIds = $_POST['users'];
-            $result = Utilisateur::suspendreUtilisateurs($userIds, $this->pdo);
+             $userDAO = new UtilisateurDAO($this->pdo);
+            $result =  $userDAO->suspendreUtilisateurs($userIds);
             if ($result->getSucceeded()) {
                 $this->actionResult->setSucceeded(true);
                 $this->actionResult->setMessage($result->getMessage());

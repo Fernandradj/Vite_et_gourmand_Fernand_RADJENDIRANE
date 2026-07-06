@@ -3,6 +3,7 @@
 
 <?php
 
+
 if (!isset($_SESSION['labels'])) {
     $_SESSION['labels'] = [];
 }
@@ -11,11 +12,12 @@ $ok = false;
 $commandes = [];
 $avis = [];
 $menus = [];
+$avisDAO = new AvisDAO($pdo);
 if (isset($_SESSION['id']) || isset($_SESSION['role'])) {
     if (($_SESSION['role'] == Utilisateur::USER_ROLE_EMPLOYE) || ($_SESSION['role'] == Utilisateur::USER_ROLE_ADMIN)) {
         $ok = true;
         $commandes = Commande::loadAllCommande($pdo);
-        $avis = Avis::loadAvisAValider($pdo);
+        $avis = $avisDAO->loadAvisAValider();
         $menus = Menu::loadMenus($pdo);
     }
 }
@@ -134,7 +136,7 @@ if ($_SESSION['role'] == Utilisateur::USER_ROLE_ADMIN) {
 
                 <div class="chart-container">
                     <canvas id="menuChart"></canvas>
-                    
+
                     <canvas id="caChart"></canvas>
                 </div>
 
@@ -245,9 +247,9 @@ if ($_SESSION['role'] == Utilisateur::USER_ROLE_ADMIN) {
                         fetch('update_graph_data.php', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                            body: 'nouvelle_valeur=' + encodeURIComponent(selectedMenu) + 
-                            '&nouvelleStartDate=' + encodeURIComponent(selectedStartDate) + 
-                            '&nouvelleEndDate=' + encodeURIComponent(selectedEndDate)
+                            body: 'nouvelle_valeur=' + encodeURIComponent(selectedMenu) +
+                                '&nouvelleStartDate=' + encodeURIComponent(selectedStartDate) +
+                                '&nouvelleEndDate=' + encodeURIComponent(selectedEndDate)
                         })
                             .then(response => response.json()) // On attend du JSON en retour !
                             .then(data => {
@@ -284,7 +286,7 @@ if ($_SESSION['role'] == Utilisateur::USER_ROLE_ADMIN) {
                         // console.log('selectedMenu:' + selectedMenu);
 
                         updateGraph(selectedMenu, selectedStartDate, selectedEndDate);
-                        
+
                     });
 
                     // Mettre à jour graphique quand la start date change
@@ -296,7 +298,7 @@ if ($_SESSION['role'] == Utilisateur::USER_ROLE_ADMIN) {
 
                         updateGraph(selectedMenu, selectedStartDate, selectedEndDate);
                     });
-                    
+
                     // Mettre à jour graphique quand la end date change
                     document.getElementById('end_date').addEventListener('change', function () {
                         selectedEndDate = this.value;

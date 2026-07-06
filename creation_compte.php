@@ -33,7 +33,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // In a real application, you would check if the user email already exists in the database
             $useremail = trim($_POST["useremail"]);
         }
-        $emailUsed = Utilisateur::checkEmailAlreadyUsed($useremail, $pdo);
+        $userDAO = new UtilisateurDAO($pdo);
+        $emailUsed = $userDAO->checkEmailAlreadyUsed($useremail);
         if ($emailUsed) {
             $useremail_err = "Cette adresse mail est utilisée. Veuillez utiliser une adresse différente.";
         }

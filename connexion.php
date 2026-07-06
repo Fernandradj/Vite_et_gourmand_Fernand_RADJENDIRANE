@@ -33,7 +33,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // $stmt = $pdo->prepare($sql);
             // $stmt->execute([$username]);
             // $user = $stmt->fetch();
-            $user = Utilisateur::loadUserFromUsername($username, $pdo);
+            $userDAO = new UtilisateurDAO($pdo);
+            $user = $userDAO->loadUserFromUsername($username);
 
             if (!empty($user)) {
                 // echo "status : " . $user['Statut'];
@@ -61,12 +62,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             header("location: index.php");
                         }
 
-                        if (!empty($roles)) {
-                            $userRole = Utilisateur::checkUserRole($roles);
+                        /* if (!empty($roles)) {
+                            $userDAO = new UtilisateurDAO($pdo);
+                            $userRole = $userDAO->checkUserRole($roles);
                             // echo "roles : " . ($userRole != "");
                             if ($userRole != "") {
                                 // echo "role : " . $userRole;
-                                // $_SESSION["user"] = new Utilisateur(true, $user['Utilisateur_Id'], $username, $userRole, $pdo);
+                                
                                 $_SESSION["loggedin"] = true;
                                 $_SESSION["id"] = $user['Utilisateur_Id'];
                                 $_SESSION["username"] = $username;
@@ -81,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             } else {
                                 $username_err = "L'utilisateur est invalide. Veuillez contacter l'administrateur.";
                             }
-                        }
+                        } */
                     } else {
                         // Password is not valid
                         $password_err = "Le mot de passe est invalide.";

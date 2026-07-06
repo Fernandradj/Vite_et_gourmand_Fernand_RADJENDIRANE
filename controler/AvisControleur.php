@@ -12,8 +12,7 @@ class AvisControleur
 
         if (isset($_POST["soumettre"])) {
             $this->soumettreAvis($commandeId);
-        }
-        else if (isset($_POST["valider"])) {
+        } else if (isset($_POST["valider"])) {
             $this->validerAvis($avisId);
         } else if (isset($_POST["rejeter"])) {
             $this->rejeterAvis($avisId);
@@ -26,14 +25,15 @@ class AvisControleur
             $note = $_POST['note'];
             $commentaire = $_POST['commentaire'];
             $utilisateurId = $_SESSION['id'];
-            $result = Avis::soumettreAvis($commandeId, $note, $commentaire, $utilisateurId, $this->pdo);
+            $avisDAO = new AvisDAO($this->pdo);
+            $result = $avisDAO->soumettreAvis($commandeId, $note, $commentaire, $utilisateurId);
             if ($result->getSucceeded()) {
                 $this->actionResult->setSucceeded(true);
                 $this->actionResult->setMessage($result->getMessage());
                 $this->actionResult->setDisplay_type(Resultat::DISPLAY_TYPE_POPUP);
                 $this->actionResult->setRedirect(true);
 
-                $avisId = Avis::loadAvisIdOfCommande($commandeId, $this->pdo);
+                $avisId = $avisDAO->loadAvisIdOfCommande($commandeId);
                 $this->actionResult->setRedirectURL('http://localhost:3000/Vite_et_gourmand_Fernand_RADJENDIRANE/detail_avis.php?avisId=' . $avisId);
             } else {
                 $this->actionResult->setSucceeded(false);
@@ -50,7 +50,9 @@ class AvisControleur
     public function validerAvis(int $avisId): void
     {
         $utilisateurId = $_SESSION['id'];
-        $result = Avis::validerAvis($avisId, $utilisateurId, $this->pdo);
+
+        $avisDAO = new AvisDAO($this->pdo);
+        $result = $avisDAO->validerAvis($avisId, $utilisateurId);
         if ($result->getSucceeded()) {
             $this->actionResult->setSucceeded(true);
             $this->actionResult->setMessage($result->getMessage());
@@ -67,7 +69,8 @@ class AvisControleur
     public function rejeterAvis(int $avisId): void
     {
         $utilisateurId = $_SESSION['id'];
-        $result = Avis::rejeterAvis($avisId, $utilisateurId, $this->pdo);
+        $avisDAO = new AvisDAO($this->pdo);
+        $result = $avisDAO->rejeterAvis($avisId, $utilisateurId);
         if ($result->getSucceeded()) {
             $this->actionResult->setSucceeded(true);
             $this->actionResult->setMessage($result->getMessage());

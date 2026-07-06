@@ -4,7 +4,9 @@
 
 if (isset($_SESSION['id']) && isset($_SESSION['role'])) {
 
-    $utilisateur = new Utilisateur(true, $_SESSION['id'], $pdo);
+    $userDAO = new UtilisateurDAO($pdo);
+    $avisDAO = new AvisDAO($pdo);
+    $utilisateur = $userDAO->getById(true, $_SESSION['id']);
 
     $userIsClient = $utilisateur->userIsClient();
     $userIsEmploye = $utilisateur->userIsEmploye();
@@ -16,11 +18,11 @@ if (isset($_SESSION['id']) && isset($_SESSION['role'])) {
     $firstAvis = false;
     if (isset($_GET['commandeId'])) {
         $commande = new Commande($_GET['commandeId'], $pdo);
-        $avis = new Avis(false, 0, Avis::AVIS_STATUT_EN_COURS, "", 0, null, null, $commande, $pdo);
+        $avis = $avisDAO->getById(false, 0, Avis::AVIS_STATUT_EN_COURS, "", 0, null, null, $commande);
         $menu = $commande->getMenu();
         $firstAvis = true;
     } else if (isset($_GET['avisId'])) {
-        $avis = new Avis(true, $_GET['avisId'], "", "", 0, null, null, null, $pdo);
+        $avis = $avisDAO->getById(true, $_GET['avisId'], "", "", 0, null, null, null);
         $commande = $avis->getCommande();
         $menu = $commande->getMenu();
     }

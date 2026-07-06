@@ -5,7 +5,8 @@
 
 $resultats = [];
 if (isset($_SESSION['id']) && isset($_SESSION['role']) && ($_SESSION['role'] == Utilisateur::USER_ROLE_ADMIN)) {
-    $resultats = Utilisateur::loadAllUsers($pdo);
+    $userDAO = new UtilisateurDAO($pdo);
+    $resultats = $userDAO->loadAllUsers();
 }
 
 require_once($currentFolder . "/controler/UtilisateurControleur.php");
@@ -44,7 +45,7 @@ $controller->handleRequest($pdo);
             </div>
             <div class="employe_header">
                 <h1>Listes des utilisateurs</h1>
-                <a class="btn btn-primary" href="creer_menu.php" role="button">+ Créer un employé</a>
+                <a class="btn btn-primary" href="creation_compte.php" role="button">+ Créer un employé</a>
             </div>
             <form method="post">
                 <table>

@@ -8,7 +8,8 @@ $userIsChauffeur = false;
 $userIsPassager = false;
 
 if (isset($_SESSION['id']) && isset($_SESSION['role'])) {
-    $user = new Utilisateur(true, $_SESSION['id'], $pdo);
+    $userDAO = new UtilisateurDAO($pdo);
+    $user = $userDAO->getById(true, $_SESSION['id']);
 }
 
 // Check if the form was submitted
@@ -55,8 +56,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $image = $_FILES['photo']['tmp_name'];
                 $imgContent = file_get_contents($image);
             }
-
-            $result = $user->updateUserProfile($username, $lastName, $firstName, $address, $phone, $email, $dateOfBirth, $hashedPassword, $imgContent, $pdo);
+ $userDAO = new UtilisateurDAO($pdo);
+            $result = $userDAO->updateUserProfile($_SESSION['id'], $username, $lastName, $firstName, $address, $phone, $email, $dateOfBirth, $hashedPassword, $imgContent);
 
             if ($result->getSucceeded()) {
                 // $_SESSION['role'] = $userRole;

@@ -41,7 +41,9 @@ $editCommande = false;
 $showSearchBar = false;
 
 $utilisateurId = $_SESSION["id"];
-$utilisateur = new Utilisateur(true, $utilisateurId, $pdo);
+
+$userDAO = new UtilisateurDAO($pdo);
+$utilisateur = $userDAO->getById(true, $utilisateurId);
 
 $suivis = [];
 

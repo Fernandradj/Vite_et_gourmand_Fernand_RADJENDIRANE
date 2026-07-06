@@ -8,7 +8,8 @@ if (isset($_GET['userId'])) {
     // $stmt = $pdo->prepare($sql);
     // $stmt->execute([$_GET['userId']]);
     // $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    $user = Utilisateur::loadUserImageFromId($_GET['userId'], $pdo);
+     $userDAO = new UtilisateurDAO($pdo);
+    $user = $userDAO->loadUserImageFromId($_GET['userId']);
 
     // Définir l'en-tête du type de contenu
     header("Content-Type: image/jpeg");
