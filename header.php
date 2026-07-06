@@ -33,7 +33,7 @@ if (isset($_SESSION["id"]) && isset($_SESSION["role"])) {
                         <a class="nav-link nav-item-link active" aria-current="page"
                             href="<?php echo $homepage; ?>">Accueil</a>
                     </li>
-                    <?php if (isset($_SESSION["id"]) && isset($_SESSION["role"]) && $_SESSION["role"] == Utilisateur::USER_ROLE_UITILISATEUR): ?>
+                    <?php if ((isset($_SESSION["id"]) && isset($_SESSION["role"]) && $_SESSION["role"] == Utilisateur::USER_ROLE_UITILISATEUR) || (!isset($_SESSION["id"]))): ?>
                         <li class="nav-item">
                             <a class="nav-link nav-item-link" href="menus.php">Menus</a>
                         </li>
@@ -47,8 +47,8 @@ if (isset($_SESSION["id"]) && isset($_SESSION["role"])) {
 
                     
                     <?php if (isset($_SESSION["id"]) && isset($_SESSION["role"]) && $_SESSION["role"] != Utilisateur::USER_ROLE_UITILISATEUR): ?>
-                        <li class="nav-item" hidden>
-                            <a class="nav-link nav-item-link" href="horaires.php">Horaires</a>
+                        <li class="nav-item">
+                            <a class="nav-link nav-item-link" href="horaire.php">Horaires</a>
                         </li>
                     <?php endif; ?>
 

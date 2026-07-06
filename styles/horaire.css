@@ -1,0 +1,36 @@
+body {
+    font-family: sans-serif;
+    background: #f4f4f4;
+}
+
+.container {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: auto;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+input[type="time"] {
+    padding: 5px;
+}
+
+button {
+    background: #800000;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.horaire_container {
+    padding: 30px;
+}
