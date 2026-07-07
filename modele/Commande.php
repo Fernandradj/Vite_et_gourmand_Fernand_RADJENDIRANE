@@ -280,6 +280,33 @@ class Commande
             }
             $stmt->execute(params: [Commande::COMMANDE_STATUS_TERMINE, $restitution_materiel, $numero_commande]);
             Commande::creerSuivi($numero_commande, Commande::COMMANDE_STATUS_TERMINE, $pdo);
+
+            $sql = "SELECT Nom, menu.Menu_Id menuId, Numero_commande, Prix_totale FROM commande JOIN menu ON menu.Menu_Id = commande.Menu_Id WHERE Numero_commande = ?";
+            $stmt = $pdo->prepare(query: $sql);
+            $stmt->execute(params: [$numero_commande]);
+            $cmd = $stmt->fetch();
+
+            $client = new MongoDB\Client("mongodb://localhost:27017");
+            $collection = $client->selectCollection('Vite_et_Gourmand', 'Commande');
+
+            // Préparation des données du document
+            $nouvelArticle = [
+                'Menu_nom' => $cmd['Nom'],
+                'Prix_totale' => (float) $cmd['Prix_totale'],
+                'Date_commande' => new MongoDB\BSON\UTCDateTime(),
+                'Numero_commande' => $cmd['Numero_commande'],
+                'Menu_id' => $cmd['menuId']
+
+            ];
+
+            $resultat = $collection->insertOne($nouvelArticle);
+
+            // Vous pouvez récupérer l'ID généré automatiquement par MongoDB
+            // $idGenere = $resultat->getInsertedId();
+            // echo "Document inséré avec succès ! ID : " . $idGenere;
+
+
+
             return new Resultat(true, "La commande a bien été terminée.");
         } catch (PDOException $e) {
             return new Resultat(false, "Une erreur s'est produite lors de la terminaison de la commande.");
@@ -449,7 +476,7 @@ class Commande
             }
 
             if (!empty($endDate)) {
-                $matchFilter['Date_commande']['$lte'] = new MongoDB\BSON\UTCDateTime(strtotime($endDate. " 23:59:59") * 1000);
+                $matchFilter['Date_commande']['$lte'] = new MongoDB\BSON\UTCDateTime(strtotime($endDate . " 23:59:59") * 1000);
             }
         }
 
