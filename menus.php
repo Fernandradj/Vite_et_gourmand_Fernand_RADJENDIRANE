@@ -113,7 +113,8 @@
                 <div class="solution_cards_box" id="menuBox">
 
                     <?php
-                    $menu_list = Menu::loadMenus($pdo);
+                    $menuDAO = new MenuDAO($pdo);
+                    $menu_list = $menuDAO->loadMenus();
 
                     if (!empty($menu_list)) {
                         foreach ($menu_list as $menu) {

@@ -127,14 +127,16 @@ $controller->handleRequest($pdo);
 
                         <form id="monFormulaire" role="form" method="POST">
                             <div class="solu_title">
-                                <h3 class="nom">
+                                <p class="nom">
+                                    <b>Nom
                                     <input name="nom" type="text">
                                     </input>
+                                    </b>
                                 </h3>
                             </div>
                             <div>
                                 <p class="entree">
-                                    <b>Entrées :
+                                    <b>Entrées
                                         <select name="entree[]" id="entree" class="form-multi-select" multiple
                                             data-coreui-search="global">
                                             <?php
@@ -149,7 +151,7 @@ $controller->handleRequest($pdo);
                                 </p>
 
                                 <p class="plat">
-                                    <b>Plats :
+                                    <b>Plats
                                         <select name="plat[]" id="plat" class="form-multi-select" multiple
                                             data-coreui-search="global">
                                             <?php
@@ -163,7 +165,7 @@ $controller->handleRequest($pdo);
                                     </b>
                                 </p>
                                 <p class="dessert">
-                                    <b>Desserts :
+                                    <b>Desserts
                                         <select name="dessert[]" id="dessert" class="form-multi-select" multiple
                                             data-coreui-search="global">
                                             <?php
@@ -176,9 +178,6 @@ $controller->handleRequest($pdo);
                                         </select>
                                     </b>
                                 </p>
-
-
-
                             </div>
                             <div class="solu_description">
 

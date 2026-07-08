@@ -47,6 +47,7 @@ $utilisateur = $userDAO->getById(true, $utilisateurId);
 
 $suivis = [];
 $commandeDAO = new CommandeDAO($pdo);
+$menuDAO = new MenuDAO($pdo);
 
 require_once($currentFolder . "/controler/CommandeControleur.php");
 $controller = new CommandeControleur();
@@ -54,7 +55,7 @@ $controller = new CommandeControleur();
 if (isset($_GET["menuId"])) {
     $menu_id = htmlspecialchars($_GET["menuId"]);
     // echo $menu_id;
-    $menu = new Menu($menu_id, $pdo);
+    $menu = $menuDAO->getbyId($menu_id);
     $defaultNbPers = $menu->getNombre_personne_minimum();
     $firstCommande = true;
     $showSearchBar = true;

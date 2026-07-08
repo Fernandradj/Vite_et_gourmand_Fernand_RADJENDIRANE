@@ -14,12 +14,13 @@ $avis = [];
 $menus = [];
 $avisDAO = new AvisDAO($pdo);
 $commandeDAO = new CommandeDAO($pdo);
+$menuDAO = new MenuDAO($pdo);
 if (isset($_SESSION['id']) || isset($_SESSION['role'])) {
     if (($_SESSION['role'] == Utilisateur::USER_ROLE_EMPLOYE) || ($_SESSION['role'] == Utilisateur::USER_ROLE_ADMIN)) {
         $ok = true;
         $commandes = $commandeDAO->loadAllCommande();
         $avis = $avisDAO->loadAvisAValider();
-        $menus = Menu::loadMenus($pdo);
+        $menus = $menuDAO->loadMenus();
     }
 }
 
@@ -76,8 +77,8 @@ if ($_SESSION['role'] == Utilisateur::USER_ROLE_ADMIN) {
             font-family: 'Segoe UI', sans-serif;
             background-color: #f8fafc;
             color: #1e293b;
-            padding: 40px;
-            display: flex;
+            /* padding: 40px;
+            display: flex; */
             flex-direction: column;
             align-items: center;
         }
@@ -262,6 +263,7 @@ if ($_SESSION['role'] == Utilisateur::USER_ROLE_ADMIN) {
 
                                 // // Exemple : On ajoute un nouveau label et la nouvelle valeur reçue
                                 // const data = JSON.parse(texteBrut);
+                                // console.log(data);
                                 menuChart.data.labels = data.nouveauLabel;
                                 menuChart.data.datasets[0].data = data.nouvelleValeur;
                                 menuChart.update();

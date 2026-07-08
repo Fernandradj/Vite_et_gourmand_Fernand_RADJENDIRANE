@@ -12,7 +12,8 @@
 
 $menu_id = htmlspecialchars($_GET["menuId"]);
 // echo $menu_id;
-$menu = new Menu($menu_id, $pdo);
+$menuDAO = new MenuDAO($pdo);
+$menu =$menuDAO->getbyId($menu_id);
 
 $commandeLink = "";
 $isLoggedIn = false;

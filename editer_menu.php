@@ -13,7 +13,8 @@ if (isset($_GET["menuId"])) {
     exit();
 }
 
-$menu = new Menu($menu_id, $pdo);
+$menuDAO = new MenuDAO($pdo);
+$menu = $menuDAO->getbyId($menu_id);
 $entresOptions = Produit::loadAllEntree($pdo);
 $platsOptions = Produit::loadAllPlat($pdo);
 $dessertsOptions = Produit::loadAllDessert($pdo);

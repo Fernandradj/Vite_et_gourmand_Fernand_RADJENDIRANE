@@ -51,7 +51,8 @@ class CommandeDAO
             $commandeData->setUtilisateur($userDAO->getById(true, $utilisateur_id));
 
             $menu_id = $commande["Menu_Id"];
-            $commandeData->setMenu(new Menu($menu_id, $this->pdo));
+            $menuDAO = new MenuDAO($this->pdo);
+            $commandeData->setMenu($menuDAO->getbyId($menu_id));
 
             $commandeData->setSuivis(Suivi::loadSuivisByCommandeId($id, $this->pdo));
         }
@@ -91,7 +92,8 @@ class CommandeDAO
             $stmt->execute(params: [$nombre_pers, $date_cmd, $date_date_heure_liv, $totale_cmd, $prix_liv, $statut, $utilisateur_id, $menu_id, $entree_id, $plat, $dessert_id, $addresse_livraison, $reduction, $prix_totale, $prix_distance_livraison]);
 
             $numero_commande = $this->loadLastCommandeOfUser($utilisateur_id);
-            Menu::reduireQuantiteMenu($menu_id, $this->pdo);
+            $menuDAO = new MenuDAO($this->pdo);
+            $menuDAO->reduireQuantiteMenu($menu_id);
             $this->creerSuivi($numero_commande, Commande::COMMANDE_STATUT_COMMANDE);
 
             return new Resultat(true, "Votre commande a bien été enregistrée.");
@@ -329,7 +331,7 @@ class CommandeDAO
                 $data[$document->_id] = $input;
             }
         } catch (MongoDB\Driver\Exception\Exception $e) {
-            echo "Erreur : " . $e->getMessage();
+            // echo "Erreur : " . $e->getMessage();
         }
 
         // $sql = "SELECT commande.Menu_Id menuId, menu.Nom menuNom, COUNT(Numero_commande) nbCommande, SUM(Prix_totale) prix FROM commande JOIN menu ON commande.Menu_Id = menu.Menu_Id WHERE Statut = ?";
