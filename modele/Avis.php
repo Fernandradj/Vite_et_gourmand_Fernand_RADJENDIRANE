@@ -42,6 +42,7 @@ class Avis
     {
         return $this->note;
     }
+    
     public function setNote(int $newNote)
     {
         $this->note = $newNote;

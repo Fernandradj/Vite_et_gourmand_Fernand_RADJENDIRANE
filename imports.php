@@ -6,6 +6,7 @@ include_once($currentFolder."/modele/Resultat.php");
 include_once($currentFolder."/modele/Utilisateur.php");
 include_once($currentFolder."/modele/Avis.php");
 include_once($currentFolder."/modele/Commande.php");
+include_once($currentFolder."/modele/CommandeDAO.php");
 include_once($currentFolder."/modele/Menu.php");
 include_once($currentFolder."/modele/Horaire.php");
 include_once($currentFolder."/modele/Produit.php");

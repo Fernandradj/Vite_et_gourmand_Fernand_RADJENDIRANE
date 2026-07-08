@@ -39,7 +39,8 @@ class AvisDAO
                 }
 
                 $commande_id = $resultat["Commande"];
-                $avisData->setCommande(new Commande($commande_id, $this->pdo));
+                $commandeDAO = new CommandeDAO($this->pdo);
+                $avisData->setCommande($commandeDAO->getById($commande_id));
             }
         } else {
             $avisData->setStatut($statut);
@@ -58,7 +59,8 @@ class AvisDAO
                 $avisData->setValideRefusePar($valide_refuse_par);
             }
             if ($commande == null) {
-                $avisData->setCommande(new Commande(0, $this->pdo));
+                $commandeDAO = new CommandeDAO($this->pdo);
+                $avisData->setCommande($commandeDAO->getById(0));
             } else {
                 $avisData->setCommande($commande);
             }
@@ -92,7 +94,8 @@ class AvisDAO
         if ($resultat) {
             foreach ($resultat as $value) {
                 $userDAO = new UtilisateurDAO($this->pdo);
-                $new_avis = $this->getById(false, $value["Avis_Id"], $value["avisStatut"], $value["Commentaire"], $value["Note"], $userDAO->getById(true, $value["Soumis_par"]), $userDAO->getById(true, $value["Valide_refuse_par"]), new Commande($value["Commande"], $this->pdo));
+                $commandeDAO = new CommandeDAO($this->pdo);
+                $new_avis = $this->getById(false, $value["Avis_Id"], $value["avisStatut"], $value["Commentaire"], $value["Note"], $userDAO->getById(true, $value["Soumis_par"]), $userDAO->getById(true, $value["Valide_refuse_par"]), $commandeDAO->getById($value["Commande"]));
                 array_push($avis, $new_avis);
             }
         }
@@ -111,8 +114,9 @@ class AvisDAO
         if ($resultat) {
             foreach ($resultat as $value) {
                 $userDAO = new UtilisateurDAO($this->pdo);
+                $commandeDAO = new CommandeDAO($this->pdo);
 
-                $new_avis = $this->getById(false, $value["Avis_Id"], $value["avisStatut"], $value["Commentaire"], $value["Note"], $userDAO->getById(true, $value["Soumis_par"]), $userDAO->getById(true), new Commande($value["Commande"], $this->pdo));
+                $new_avis = $this->getById(false, $value["Avis_Id"], $value["avisStatut"], $value["Commentaire"], $value["Note"], $userDAO->getById(true, $value["Soumis_par"]), $userDAO->getById(true), $commandeDAO->getById($value["Commande"]));
                 array_push($avis, $new_avis);
             }
         }

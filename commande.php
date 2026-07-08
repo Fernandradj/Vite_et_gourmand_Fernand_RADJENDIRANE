@@ -46,6 +46,7 @@ $userDAO = new UtilisateurDAO($pdo);
 $utilisateur = $userDAO->getById(true, $utilisateurId);
 
 $suivis = [];
+$commandeDAO = new CommandeDAO($pdo);
 
 require_once($currentFolder . "/controler/CommandeControleur.php");
 $controller = new CommandeControleur();
@@ -62,7 +63,7 @@ if (isset($_GET["menuId"])) {
 if (isset($_GET["commandeId"])) {
     $commande_id = htmlspecialchars($_GET["commandeId"]);
     // echo $menu_id;
-    $commande = new Commande($commande_id, $pdo);
+    $commande = $commandeDAO->getbyId($commande_id);
     $menu = $commande->getMenu();
     $menu_id = $commande->getMenu()->getId();
     $defaultDateTime = $commande->getDateHeureLivraisonInput();

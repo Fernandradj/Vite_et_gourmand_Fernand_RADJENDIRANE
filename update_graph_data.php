@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 $currentFolder = realpath(dirname(__FILE__));
 include_once("database.php");
-include_once($currentFolder."/modele/Commande.php");
+include_once($currentFolder . "/modele/Commande.php");
 
 $valeur = "";
 // On imagine que vous traitez la donnée ici
@@ -16,14 +16,14 @@ if (isset($_POST['nouvelle_valeur'])) {
 
 $startDate = "";
 if (isset($_POST['nouvelleStartDate'])) {
-    $startDate = $_POST ['nouvelleStartDate'];
+    $startDate = $_POST['nouvelleStartDate'];
     // if ($startDate == 'All'){
     //     $startDate = "";
     // }
 }
 $endDate = "";
 if (isset($_POST['nouvelleEndDate'])) {
-    $endDate = $_POST ['nouvelleEndDate'];
+    $endDate = $_POST['nouvelleEndDate'];
     // if ($endDate == 'All'){
     //     $endDate = "";
     // }
@@ -32,11 +32,11 @@ if (isset($_POST['nouvelleEndDate'])) {
 $labels = [];
 $values = [];
 $cavalues = [];
-
-$data = Commande::loadChiffresMenus($valeur, $startDate, $endDate, $pdo);
+$commandeDAO = new CommandeDAO($pdo);
+$data = $commandeDAO->loadChiffresMenus($valeur, $startDate, $endDate);
 
 foreach ($data as $key => $value) {
-    
+
 
     $labels[] = $key;
     $values[] = $data[$key]['nbCommande'];

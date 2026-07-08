@@ -25,7 +25,8 @@ class CommandeControleur
         } else if (isset($_POST['modifier'])) {
             $this->modifierCommande($commande_id);
         } else if (isset($_POST['donnerAvis'])) {
-            $avisId = Avis::loadAvisIdOfCommande($commande_id, $this->pdo);
+            $avisDAO=new AvisDAO($pdo);
+            $avisId = $avisDAO->loadAvisIdOfCommande($commande_id);
             if ($avisId != 0) {
                 header("Location: http://localhost:3000/Vite_et_gourmand_Fernand_RADJENDIRANE/detail_avis.php?avisId=" . $avisId);
             } else {
@@ -69,7 +70,8 @@ class CommandeControleur
         if (!empty($addresse_livraison) && !empty($date_heure_liv)) {
             if ($quantite_restante > 0) {
                 // echo "ok";
-                $result = Commande::saveCommande($nombre_pers, $date_cmd, $date_heure_liv, $totale_cmd, $prix_liv, $prix_distance, $reduction, $prix_totale, $statut, $utilisateur_id, $menu_id, $entree_id, $plat_id, $dessert_id, $addresse_livraison, $this->pdo);
+                $commandeDAO = new CommandeDAO($this->pdo);
+                $result = $commandeDAO->saveCommande($nombre_pers, $date_cmd, $date_heure_liv, $totale_cmd, $prix_liv, $prix_distance, $reduction, $prix_totale, $statut, $utilisateur_id, $menu_id, $entree_id, $plat_id, $dessert_id, $addresse_livraison);
 
                 if ($result->getSucceeded()) {
                     $this->actionResult->setSucceeded(true);
@@ -77,7 +79,7 @@ class CommandeControleur
                     $this->actionResult->setDisplay_type(Resultat::DISPLAY_TYPE_POPUP);
                     $this->actionResult->setRedirect(true);
 
-                    $numero_commande = Commande::loadLastCommandeOfUser($utilisateur_id, $this->pdo);
+                    $numero_commande = $commandeDAO->loadLastCommandeOfUser($utilisateur_id);
 
                     $this->actionResult->setRedirectURL('http://localhost:3000/Vite_et_gourmand_Fernand_RADJENDIRANE/commande.php?commandeId=' . $numero_commande);
                 } else {
@@ -107,7 +109,8 @@ class CommandeControleur
     {
         // echo "annuler";
         $commandeId = $commande_id;
-        $result = Commande::annulerCommande($commandeId, $this->pdo);
+        $commandeDAO = new CommandeDAO($this->pdo);
+        $result = $commandeDAO->annulerCommande($commandeId);
         if ($result->getSucceeded()) {
             $this->actionResult->setSucceeded(true);
             $this->actionResult->setMessage($result->getMessage());
@@ -138,7 +141,8 @@ class CommandeControleur
         $prix_totale = htmlspecialchars($_POST["prix_totale"]);
         $pret_materiel = (isset($_POST['pret_materiel'])) ? 1 : 0;
         $restitution_materiel = (isset($_POST['restitution_materiel'])) ? 1 : 0;
-        $result = Commande::modifierCommande($commandeId, $addresse_livraison, $date_heure_liv, $plat_id, $dessert_id, $entree_id, $nombrePersonne, $pret_materiel, $restitution_materiel, $totale_cmd, $prix_liv, $prix_distance, $reduction, $prix_totale, $this->pdo);
+        $commandeDAO = new CommandeDAO($this->pdo);
+        $result = $commandeDAO->modifierCommande($commandeId, $addresse_livraison, $date_heure_liv, $plat_id, $dessert_id, $entree_id, $nombrePersonne, $pret_materiel, $restitution_materiel, $totale_cmd, $prix_liv, $prix_distance, $reduction, $prix_totale);
         if ($result->getSucceeded()) {
             $this->actionResult->setSucceeded(true);
             $this->actionResult->setMessage($result->getMessage());
@@ -156,7 +160,8 @@ class CommandeControleur
     {
         // echo "valider";
         $commandeId = $commande_id;
-        $result = Commande::validerCommande($commandeId, $this->pdo);
+        $commandeDAO = new CommandeDAO($this->pdo);
+        $result = $commandeDAO->validerCommande($commandeId);
         if ($result->getSucceeded()) {
             $this->actionResult->setSucceeded(true);
             $this->actionResult->setMessage($result->getMessage());
@@ -174,7 +179,8 @@ class CommandeControleur
     {
         // echo "preparer";
         $commandeId = $commande_id;
-        $result = Commande::preparerCommande($commandeId, $this->pdo);
+        $commandeDAO = new CommandeDAO($this->pdo);
+        $result = $commandeDAO->preparerCommande($commandeId);
         if ($result->getSucceeded()) {
             $this->actionResult->setSucceeded(true);
             $this->actionResult->setMessage($result->getMessage());
@@ -191,7 +197,8 @@ class CommandeControleur
     {
         // echo "expedier";
         $commandeId = $commande_id;
-        $result = Commande::expedierCommande($commandeId, $this->pdo);
+        $commandeDAO = new CommandeDAO($this->pdo);
+        $result = $commandeDAO->expedierCommande($commandeId);
         if ($result->getSucceeded()) {
             $this->actionResult->setSucceeded(true);
             $this->actionResult->setMessage($result->getMessage());
@@ -210,7 +217,8 @@ class CommandeControleur
         // echo "livrer";   
         $commandeId = $commande_id;
         $pret_materiel = isset($_POST['pret_materiel2']) ? 1 : 0;
-        $result = Commande::livrerCommande($commandeId, $pret_materiel, $this->pdo);
+        $commandeDAO = new CommandeDAO($this->pdo);
+        $result = $commandeDAO->livrerCommande($commandeId, $pret_materiel);
         if ($result->getSucceeded()) {
             $this->actionResult->setSucceeded(true);
             $this->actionResult->setMessage($result->getMessage());
@@ -228,7 +236,8 @@ class CommandeControleur
     {
         $commandeId = $commande_id;
         $pret_materiel = isset($_POST['pret_materiel2']) ? 1 : 0;
-        $result = Commande::terminerCommande($commandeId, $pret_materiel, $this->pdo);
+        $commandeDAO = new CommandeDAO($this->pdo);
+        $result = $commandeDAO->terminerCommande($commandeId, $pret_materiel);
         if ($result->getSucceeded()) {
             $this->actionResult->setSucceeded(true);
             $this->actionResult->setMessage($result->getMessage());

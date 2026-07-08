@@ -13,16 +13,17 @@ $commandes = [];
 $avis = [];
 $menus = [];
 $avisDAO = new AvisDAO($pdo);
+$commandeDAO = new CommandeDAO($pdo);
 if (isset($_SESSION['id']) || isset($_SESSION['role'])) {
     if (($_SESSION['role'] == Utilisateur::USER_ROLE_EMPLOYE) || ($_SESSION['role'] == Utilisateur::USER_ROLE_ADMIN)) {
         $ok = true;
-        $commandes = Commande::loadAllCommande($pdo);
+        $commandes = $commandeDAO->loadAllCommande();
         $avis = $avisDAO->loadAvisAValider();
         $menus = Menu::loadMenus($pdo);
     }
 }
 
-$data = Commande::loadChiffresMenus("", "", "", $pdo);
+$data = $commandeDAO->loadChiffresMenus("", "", "");
 
 // $dataNbCommande = [];
 // $dataPrix = [];
@@ -44,7 +45,7 @@ if ($_SESSION['role'] == Utilisateur::USER_ROLE_ADMIN) {
         $cavalues[] = $data[$key]['prix'];
     }
     // print_r($labels);
-    $menu_options = Commande::loadMenus($pdo);
+    $menu_options = $commandeDAO->loadMenus();
 
 
     // $labels[] = "Pizza";
