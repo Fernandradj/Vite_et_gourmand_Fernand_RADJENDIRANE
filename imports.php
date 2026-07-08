@@ -11,6 +11,7 @@ include_once($currentFolder."/modele/Menu.php");
 include_once($currentFolder."/modele/MenuDAO.php");
 include_once($currentFolder."/modele/Horaire.php");
 include_once($currentFolder."/modele/Produit.php");
+include_once($currentFolder."/modele/ProduitDAO.php");
 include_once($currentFolder."/modele/Suivi.php");
 include_once($currentFolder."/modele/UtilisateurDAO.php");
 include_once($currentFolder."/modele/AvisDAO.php");

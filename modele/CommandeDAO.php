@@ -40,11 +40,12 @@ class CommandeDAO
             $commandeData->setAdresseLivraison($commande["Adresse_livraison"]);
 
             $entree_id = $commande["Entree_Id"];
-            $commandeData->setEntree(new Produit(true, $entree_id, "", "", "", pdo: $this->pdo));
+            $produitDAO = new ProduitDAO($this->pdo);
+            $commandeData->setEntree($produitDAO->getById(true, $entree_id, "", "", ""));
             $plat_id = $commande["Plat_Id"];
-            $commandeData->setPlat(new Produit(true, $plat_id, "", "", "", pdo: $this->pdo));
+            $commandeData->setPlat($produitDAO->getById(true, $plat_id, "", "", ""));
             $dessert_id = $commande["Dessert_Id"];
-            $commandeData->setDessert(new Produit(true, $dessert_id, "", "", "", pdo: $this->pdo));
+            $commandeData->setDessert($produitDAO->getById(true, $dessert_id, "", "", ""));
 
             $utilisateur_id = $commande["Utilisateur_Id"];
             $userDAO = new UtilisateurDAO($this->pdo);

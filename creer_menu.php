@@ -5,9 +5,10 @@
 
 <?php
 
-$entresOptions = Produit::loadAllEntree($pdo);
-$platsOptions = Produit::loadAllPlat($pdo);
-$dessertsOptions = Produit::loadAllDessert($pdo);
+$produitDAO = new ProduitDAO($pdo);
+$entresOptions = $produitDAO->loadAllEntree();
+$platsOptions = $produitDAO->loadAllPlat();
+$dessertsOptions = $produitDAO->loadAllDessert();
 $regimeOptions = Produit::REGIME_OPTIONS;
 $themeOptions = Produit::THEME_OPTIONS;
 

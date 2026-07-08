@@ -43,7 +43,8 @@ class MenuDAO
                 if ($photo == null) {
                     $photo = "";
                 }
-                $new_produit = new Produit(false, $value["Produit_Id"], $value["Nom"], $value["Type"], $photo, $this->pdo);
+                $produitDAO = new ProduitDAO($this->pdo);
+                $new_produit = $produitDAO->getById(false, $value["Produit_Id"], $value["Nom"], $value["Type"], $photo);
 
                 if ($value["Type"] == Produit::TYPE_ENTREE) {
                     array_push($entrees, $new_produit);
@@ -52,8 +53,6 @@ class MenuDAO
                 } elseif ($value["Type"] == Produit::TYPE_DESSERT) {
                     array_push($desserts, $new_produit);
                 }
-
-
             }
         }
         $menuData->setEntreeArray($entrees);
