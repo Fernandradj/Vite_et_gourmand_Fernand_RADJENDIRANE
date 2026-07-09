@@ -54,8 +54,8 @@ class CommandeDAO
             $menu_id = $commande["Menu_Id"];
             $menuDAO = new MenuDAO($this->pdo);
             $commandeData->setMenu($menuDAO->getbyId($menu_id));
-
-            $commandeData->setSuivis(Suivi::loadSuivisByCommandeId($id, $this->pdo));
+            $suiviDAO = new SuiviDAO($this->pdo);
+            $commandeData->setSuivis($suiviDAO->loadSuivisByCommandeId($id));
         }
 
         return $commandeData;

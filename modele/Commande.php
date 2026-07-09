@@ -78,11 +78,6 @@ class Commande
         $this->suivis = $suivis;
     }
 
-    public function getFullSuivi(): array
-    {
-        return Suivi::loadFullSuivi($this);
-    }
-
     public function getNumeroCommande(): int
     {
         return $this->numero_commande;

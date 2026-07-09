@@ -80,7 +80,8 @@ if (isset($_GET["commandeId"])) {
         $editCommande = true;
         $showSearchBar = true;
     }
-    $suivis = $commande->getFullSuivi();
+    $suiviDAO = new SuiviDAO($pdo);
+    $suivis = $suiviDAO->loadFullSuivi($commande);
 }
 
 $controller->handleRequest($menu_id, $commande_id, $pdo);
