@@ -7,11 +7,13 @@
                 <h2 class="title">Horaire d'ouvertures</h2>
                 <ul class="list-unstyled opening-hours">
                     <?php
-                    $horaire_list = Horaire::loadHoraire($pdo);
+                    $horaireDAO = new HoraireDAO($pdo);
+                    $horaire_list = $horaireDAO->loadHoraire();
+
 
                     if (!empty($horaire_list)) {
                         foreach ($horaire_list as $horaire) {
-                            echo '<li>'.$horaire->getJour().'<span class="pull-right">'.$horaire->getHoraire_ouverture().'-'.$horaire->getHoraire_fermeture().'</span></li>';
+                            echo '<li>' . $horaire->getJour() . '<span class="pull-right">' . $horaire->getHoraire_ouverture() . '-' . $horaire->getHoraire_fermeture() . '</span></li>';
 
                         }
                     }

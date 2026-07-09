@@ -10,8 +10,8 @@
 </head>
 
 <?php
-
-$horaires = Horaire::loadHoraire($pdo);
+$horaireDAO = new HoraireDAO($pdo);
+$horaires = $horaireDAO->loadHoraire();
 
 require_once($currentFolder . "/controler/HoraireControleur.php");
 $controller = new HoraireControleur();

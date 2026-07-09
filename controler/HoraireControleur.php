@@ -19,7 +19,8 @@ class HoraireControleur
 
     public function enregistrerHoraire(): void
     {
-        $result = Horaire::saveHoraire($_POST, $this->pdo);
+        $horaireDAO = new HoraireDAO($this->pdo);
+        $result = $horaireDAO->saveHoraire($_POST);
         if ($result->getSucceeded()) {
             $this->actionResult->setSucceeded(true);
             $this->actionResult->setMessage($result->getMessage());
@@ -33,7 +34,8 @@ class HoraireControleur
         }
     }
 
-    public function getResult(): Resultat {
+    public function getResult(): Resultat
+    {
         return $this->actionResult;
     }
 }
