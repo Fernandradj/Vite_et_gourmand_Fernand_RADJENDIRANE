@@ -36,7 +36,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['role'])) {
         $editMode = true;
     }
 
-    require_once($currentFolder . "/controler/AvisControleur.php");
+    // require_once(BASE_URL . "/controler/AvisControleur.php");
     $controller = new AvisControleur();
     $controller->handleRequest($commande->getNumeroCommande(), $avis->getId(), $pdo);
 }
@@ -46,7 +46,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['role'])) {
 <head>
     <?php include ROOT_PATH . 'head.php' ?>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
-    <link rel="stylesheet" href="./styles/avis.css" type="text/css">
+    <link rel="stylesheet" href="<?php echo BASE_URL_STYLE . "avis.css" ?>" type="text/css">
     <title>Avis</title>
 </head>
 

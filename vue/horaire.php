@@ -1,4 +1,7 @@
-<?php require_once '../config.php'; ?>
+<?php
+ob_start();
+require_once '../config.php';
+?>
 <?php include ROOT_PATH . 'imports.php' ?>
 <?php include ROOT_PATH . 'session.php' ?>
 
@@ -6,7 +9,7 @@
 
 <head>
     <?php include ROOT_PATH . 'head.php' ?>
-    <link rel="stylesheet" href="../styles/horaire.css" type="text/css">
+    <link rel="stylesheet" href="<?php echo BASE_URL_STYLE . "horaire.css" ?>" type="text/css">
     <title>Horaire</title>
 </head>
 
@@ -14,7 +17,7 @@
 $horaireDAO = new HoraireDAO($pdo);
 $horaires = $horaireDAO->loadHoraire();
 
-require_once($currentFolder . "../controler/HoraireControleur.php");
+// require_once($currentFolder . "../controler/HoraireControleur.php");
 $controller = new HoraireControleur();
 $controller->handleRequest($pdo);
 
@@ -34,8 +37,16 @@ $controller->handleRequest($pdo);
             include 'message.php';
 
             if ($statusMessage->getRedirect()) {
-                // echo 'goto ' . $statusMessage->getRedirectURL();
-                header('Refresh: 2; url=' . $statusMessage->getRedirectURL());
+                $redirectUrl = $statusMessage->getRedirectURL();
+                // echo 'goto ' . $redirectUrl;
+                header('Refresh: 2; url=' . $redirectUrl);
+                ?>
+                <script>
+                    setTimeout(function () {
+                        window.location.href = "<?= $redirectUrl ?>";
+                    }, 2000);
+                </script>
+                <?php
                 exit();
             }
             ?>

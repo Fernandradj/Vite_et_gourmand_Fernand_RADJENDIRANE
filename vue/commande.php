@@ -53,7 +53,7 @@ $suivis = [];
 $commandeDAO = new CommandeDAO($pdo);
 $menuDAO = new MenuDAO($pdo);
 
-require_once($currentFolder . "../controler/CommandeControleur.php");
+// require_once($currentFolder . "../controler/CommandeControleur.php");
 $controller = new CommandeControleur();
 
 if (isset($_GET["menuId"])) {

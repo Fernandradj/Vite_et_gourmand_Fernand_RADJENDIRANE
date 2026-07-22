@@ -25,7 +25,7 @@ $dessertsOptions = $produitDAO->loadAllDessert();
 $regimeOptions = Produit::REGIME_OPTIONS;
 $themeOptions = Produit::THEME_OPTIONS;
 
-require_once($currentFolder . "/controler/MenuControleur.php");
+// require_once($currentFolder . "/controler/MenuControleur.php");
 $controller = new MenuControleur();
 $controller->handleRequest($pdo);
 

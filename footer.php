@@ -35,6 +35,10 @@
 
         <div class="footer_right">
 
+            <div>
+                <a class="footer_contact" href="<?php echo BASE_URL_VUE."contact.php"?>">Contact</a>
+
+            </div>
 
             <div>
                 <a class="footer_mention" href="<?php echo BASE_URL_VUE."mention_legale.php"?>">Mentions Légales</a>

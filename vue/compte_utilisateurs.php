@@ -1,4 +1,7 @@
-<?php require_once '../config.php'; ?>
+<?php
+ob_start();
+require_once '../config.php';
+?>
 <?php include ROOT_PATH . 'imports.php' ?>
 <?php include ROOT_PATH . 'session.php' ?>
 
@@ -10,7 +13,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['role']) && ($_SESSION['role'] == 
     $resultats = $userDAO->loadAllUsers();
 }
 
-require_once($currentFolder . "/controler/UtilisateurControleur.php");
+// require_once($currentFolder . "/controler/UtilisateurControleur.php");
 $controller = new UtilisateurControleur();
 $controller->handleRequest($pdo);
 
@@ -20,7 +23,7 @@ $controller->handleRequest($pdo);
 
 <head>
     <?php include ROOT_PATH . 'head.php' ?>
-    <link rel="stylesheet" href="styles/compte_utilisateurs.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL_STYLE . "compte_utilisateurs.css" ?>">
     <title>Comptes utilisateurs</title>
 </head>
 
@@ -39,9 +42,18 @@ $controller->handleRequest($pdo);
                 include 'message.php';
 
                 if ($statusMessage->getRedirect()) {
-                    header('Refresh: 2; url=' . $statusMessage->getRedirectURL());
-                    exit();
-                }
+                $redirectUrl = $statusMessage->getRedirectURL();
+                // echo 'goto ' . $redirectUrl;
+                header('Refresh: 2; url=' . $redirectUrl);
+                ?>
+                <script>
+                    setTimeout(function () {
+                        window.location.href = "<?= $redirectUrl ?>";
+                    }, 2000);
+                </script>
+                <?php
+                exit();
+            }
                 ?>
             </div>
             <div class="employe_header">

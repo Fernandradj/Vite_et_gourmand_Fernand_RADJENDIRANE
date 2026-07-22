@@ -55,12 +55,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $_SESSION["username"] = $username;
                         $_SESSION["role"] = $userRole;
                         if ($userRole == Utilisateur::USER_ROLE_ADMIN) {
-                            header("location: accueil_employe.php");
+                            header("location: " . BASE_URL_VUE . "accueil_employe.php");
                         } else if ($userRole == Utilisateur::USER_ROLE_EMPLOYE) {
-                            header("location: accueil_employe.php");
+                            header("location: " . BASE_URL_VUE . "accueil_employe.php");
+                        } else if ($userRole == Utilisateur::USER_ROLE_UITILISATEUR) {
+                            header("location: " . BASE_URL_VUE . "accueil_utilisateur.php");
                         } else {
                             // header("location: accueil_utilisateur.php");
-                            header("location: index.php");
+                            header("location: " . BASE_URL . "index.php");
                         }
 
                         /* if (!empty($roles)) {
@@ -69,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             // echo "roles : " . ($userRole != "");
                             if ($userRole != "") {
                                 // echo "role : " . $userRole;
-                                
+
                                 $_SESSION["loggedin"] = true;
                                 $_SESSION["id"] = $user['Utilisateur_Id'];
                                 $_SESSION["username"] = $username;
@@ -145,7 +147,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </main>
 
     <?php include ROOT_PATH . 'footer.php' ?>
-    
+
 </body>
 
 </html>

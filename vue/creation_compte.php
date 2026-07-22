@@ -74,9 +74,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             try {
                 $stmt = false;
-                echo "isAdmin: " . $isAdmin;
-                echo "username: " . $username;
-                echo "useremail: " . $useremail;
+                // echo "isAdmin: " . $isAdmin;
+                // echo "username: " . $username;
+                // echo "useremail: " . $useremail;
                 if ($isAdmin) {
                     $sql = "INSERT INTO utilisateur (Pseudo, Email, Role, Statut) VALUES (?, ?, ?, ?)";
                     $stmt = $pdo->prepare($sql);

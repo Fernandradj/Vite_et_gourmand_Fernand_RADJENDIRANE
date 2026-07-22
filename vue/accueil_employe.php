@@ -70,7 +70,7 @@ if ($_SESSION['role'] == Utilisateur::USER_ROLE_ADMIN) {
 
 <head>
     <?php include ROOT_PATH . 'head.php' ?>
-    <link rel="stylesheet" href="styles/accueil_employe.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL_STYLE . "accueil_employe.css" ?>">
     <title>Accueil</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
