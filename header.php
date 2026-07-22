@@ -1,16 +1,16 @@
 <!-- header -->
 <?php
 
-$homepage = "index.php";
+$homepage = BASE_URL . "index.php";
 if (isset($_SESSION["id"]) && isset($_SESSION["role"])) {
     $role = $_SESSION["role"];
 
     if ($role == Utilisateur::USER_ROLE_ADMIN) {
-        $homepage = "accueil_employe.php";
+        $homepage = BASE_URL_VUE . "accueil_employe.php";
     } else if ($role == Utilisateur::USER_ROLE_EMPLOYE) {
-        $homepage = "accueil_employe.php";
+        $homepage = BASE_URL_VUE . "accueil_employe.php";
     } else if ($role == Utilisateur::USER_ROLE_UITILISATEUR) {
-        $homepage = "accueil_utilisateur.php";
+        $homepage = BASE_URL_VUE . "accueil_utilisateur.php";
     }
 }
 
@@ -20,7 +20,8 @@ if (isset($_SESSION["id"]) && isset($_SESSION["role"])) {
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <a class="navbar-brand" href="<?php echo $homepage; ?>">
-                <img src="images/Logo_vite_et_gourmand.png" class="vite_et_gourmand_logo" alt="Vite et Gourmand">
+                <img src="<?php echo BASE_URL_IMAGE . "Logo_vite_et_gourmand.png" ?>" class=" vite_et_gourmand_logo"
+                    alt="Vite et Gourmand">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -35,41 +36,42 @@ if (isset($_SESSION["id"]) && isset($_SESSION["role"])) {
                     </li>
                     <?php if ((isset($_SESSION["id"]) && isset($_SESSION["role"]) && $_SESSION["role"] == Utilisateur::USER_ROLE_UITILISATEUR) || (!isset($_SESSION["id"]))): ?>
                         <li class="nav-item">
-                            <a class="nav-link nav-item-link" href="menus.php">Menus</a>
+                            <a class="nav-link nav-item-link" href="<?php echo BASE_URL_VUE . "menus.php" ?>">Menus</a>
                         </li>
                     <?php endif; ?>
 
                     <?php if (isset($_SESSION["id"]) && isset($_SESSION["role"]) && $_SESSION["role"] == Utilisateur::USER_ROLE_ADMIN): ?>
                         <li class="nav-item">
-                            <a class="nav-link nav-item-link" href="compte_utilisateurs.php">Comptes</a>
+                            <a class="nav-link nav-item-link"
+                                href="<?php echo BASE_URL_VUE . "compte_utilisateurs.php" ?>">Comptes</a>
                         </li>
                     <?php endif; ?>
 
-                    
+
                     <?php if (isset($_SESSION["id"]) && isset($_SESSION["role"]) && $_SESSION["role"] != Utilisateur::USER_ROLE_UITILISATEUR): ?>
                         <li class="nav-item">
-                            <a class="nav-link nav-item-link" href="horaire.php">Horaires</a>
+                            <a class="nav-link nav-item-link" href="<?php echo BASE_URL_VUE . "horaire.php" ?>">Horaires</a>
                         </li>
                     <?php endif; ?>
 
                     <li class="nav-item">
-                        <a class="nav-link nav-item-link" href="contact.php">Contact</a>
+                        <a class="nav-link nav-item-link" href="<?php echo BASE_URL_VUE . "contact.php" ?>">Contact</a>
                     </li>
 
                     <?php if (isset($_SESSION["id"]) && isset($_SESSION["username"])): ?>
                         <li class="nav-item">
                             <a class="nav-link nav-item-link"
-                                href="edition_profil.php">Bonjour<?php echo " " . $_SESSION["username"] . " ! "; ?></a>
+                                href="<?php echo BASE_URL_VUE . "edition_profil.php" ?>">Bonjour<?php echo " " . $_SESSION["username"] . " ! "; ?></a>
                         </li>
                     <?php endif; ?>
 
                     <li class="nav-item">
                         <?php
                         if (isset($_SESSION["id"])) {
-                            echo "<a class=\"nav-link nav-item-link\" href=\"deconnexion.php\">";
+                            echo "<a class=\"nav-link nav-item-link\" href=\"" . BASE_URL_VUE . "deconnexion.php\">";
                             echo "Se Déconnecter";
                         } else {
-                            echo "<a class=\"nav-link nav-item-link\" href=\"connexion.php\">";
+                            echo "<a class=\"nav-link nav-item-link\" href=\"" . BASE_URL_VUE . "connexion.php\">";
                             echo "Se Connecter";
                         }
                         echo "</a>";

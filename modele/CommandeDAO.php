@@ -61,6 +61,23 @@ class CommandeDAO
         return $commandeData;
     }
 
+    public function loadCommandeUtilisateur(int $Utilisateur_Id)
+    {
+        $sql = "SELECT Numero_commande, Date_commande, Date_Heure_livraison, Prix_totale, Statut, Pret_materiel, Restitution_materiel, Utilisateur_Id, Menu_Id FROM commande WHERE Utilisateur_Id = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$Utilisateur_Id]);
+        $resultat = $stmt->fetchAll();
+
+        $commandes = [];
+        if ($resultat) {
+            foreach ($resultat as $value) {
+                $new_commande = $this->getById($value["Numero_commande"]);
+                array_push($commandes, $new_commande);
+            }
+        }
+        return $commandes;
+    }
+
     public function loadAllCommande()
     {
         $sql = "SELECT Numero_commande, Date_commande, Date_Heure_livraison, Prix_totale, Statut, Pret_materiel, Restitution_materiel, Utilisateur_Id, Menu_Id FROM commande";

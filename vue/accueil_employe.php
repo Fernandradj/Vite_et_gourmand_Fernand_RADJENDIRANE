@@ -1,5 +1,6 @@
-<?php include 'imports.php' ?>
-<?php include 'session.php' ?>
+<?php require_once '../config.php'; ?>
+<?php include ROOT_PATH . 'imports.php' ?>
+<?php include ROOT_PATH . 'session.php' ?>
 
 <?php
 
@@ -65,10 +66,10 @@ if ($_SESSION['role'] == Utilisateur::USER_ROLE_ADMIN) {
 }
 ?>
 
-<?php include 'html.php' ?>
+<?php include ROOT_PATH . 'html.php' ?>
 
 <head>
-    <?php include 'head.php' ?>
+    <?php include ROOT_PATH . 'head.php' ?>
     <link rel="stylesheet" href="styles/accueil_employe.css">
     <title>Accueil</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -101,8 +102,7 @@ if ($_SESSION['role'] == Utilisateur::USER_ROLE_ADMIN) {
 
 <body>
 
-    <?php include 'header.php' ?>
-
+    <?php include ROOT_PATH . 'header.php' ?>
 
     <!-- main -->
     <main>
@@ -453,7 +453,7 @@ if ($_SESSION['role'] == Utilisateur::USER_ROLE_ADMIN) {
 
     </main>
 
-    <?php include 'footer.php' ?>
+    <?php include ROOT_PATH . 'footer.php' ?>
 
 </body>
 

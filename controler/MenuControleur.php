@@ -12,8 +12,7 @@ class MenuControleur
 
         if (isset($_POST["enregistrer"])) {
             $this->saveMenu();
-        }
-        else if (isset($_POST["creer"])) {
+        } else if (isset($_POST["creer"])) {
             $this->creerMenu();
         }
     }
@@ -53,7 +52,7 @@ class MenuControleur
                 $this->actionResult->setDisplay_type(Resultat::DISPLAY_TYPE_POPUP);
                 $this->actionResult->setRedirect(true);
                 $menuId = $menuDAO->loadMenuIdByName($nom);
-                $this->actionResult->setRedirectURL('http://localhost:3000/Vite_et_gourmand_Fernand_RADJENDIRANE/editer_menu.php?menuId=' . $menuId);
+                $this->actionResult->setRedirectURL(BASE_URL_VUE . 'editer_menu.php?menuId=' . $menuId);
             } else {
                 $this->actionResult->setSucceeded(false);
                 $this->actionResult->setMessage($result->getMessage());
@@ -100,7 +99,7 @@ class MenuControleur
                 $this->actionResult->setDisplay_type(Resultat::DISPLAY_TYPE_POPUP);
                 $this->actionResult->setRedirect(true);
                 $menuId = $menuDAO->loadLastMenuCreated();
-                $this->actionResult->setRedirectURL('http://localhost:3000/Vite_et_gourmand_Fernand_RADJENDIRANE/editer_menu.php?menuId=' . $menuId);
+                $this->actionResult->setRedirectURL(BASE_URL_VUE . 'editer_menu.php?menuId=' . $menuId);
             } else {
                 $this->actionResult->setSucceeded(false);
                 $this->actionResult->setMessage($result->getMessage());

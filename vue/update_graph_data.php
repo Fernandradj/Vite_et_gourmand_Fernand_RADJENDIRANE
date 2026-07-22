@@ -1,9 +1,12 @@
 <?php
+require_once '../config.php';
+include ROOT_PATH . 'imports.php';
+include ROOT_PATH . 'session.php';
 header('Content-Type: application/json');
-$currentFolder = realpath(dirname(__FILE__));
-include_once("database.php");
-include_once($currentFolder . "/modele/Commande.php");
-include_once($currentFolder . "/modele/CommandeDAO.php");
+// $currentFolder = realpath(dirname(__FILE__));
+// include_once("../database.php");
+// include_once($currentFolder . "../modele/Commande.php");
+// include_once($currentFolder . "../modele/CommandeDAO.php");
 
 $valeur = "";
 // On imagine que vous traitez la donnée ici

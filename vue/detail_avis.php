@@ -1,5 +1,9 @@
-<?php include 'imports.php' ?>
-<?php include 'session.php' ?>
+<?php
+ob_start();
+require_once '../config.php';
+?>
+<?php include ROOT_PATH . 'imports.php' ?>
+<?php include ROOT_PATH . 'session.php' ?>
 <?php
 
 if (isset($_SESSION['id']) && isset($_SESSION['role'])) {
@@ -17,7 +21,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['role'])) {
     $menu = null;
     $firstAvis = false;
     if (isset($_GET['commandeId'])) {
-        $commandeDAO = new CommandeDAO($this->pdo);
+        $commandeDAO = new CommandeDAO($pdo);
         $commande = $commandeDAO->getbyId($_GET['commandeId']);
         $avis = $avisDAO->getById(false, 0, Avis::AVIS_STATUT_EN_COURS, "", 0, null, null, $commande);
         $menu = $commande->getMenu();
@@ -37,10 +41,10 @@ if (isset($_SESSION['id']) && isset($_SESSION['role'])) {
     $controller->handleRequest($commande->getNumeroCommande(), $avis->getId(), $pdo);
 }
 ?>
-<?php include 'html.php' ?>
+<?php include ROOT_PATH . 'html.php' ?>
 
 <head>
-    <?php include 'head.php' ?>
+    <?php include ROOT_PATH . 'head.php' ?>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
     <link rel="stylesheet" href="./styles/avis.css" type="text/css">
     <title>Avis</title>
@@ -48,7 +52,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['role'])) {
 
 <body>
 
-    <?php include 'header.php' ?>
+    <?php include ROOT_PATH . 'header.php' ?>
 
     <!-- main -->
     <main>
@@ -61,7 +65,16 @@ if (isset($_SESSION['id']) && isset($_SESSION['role'])) {
                 include 'message.php';
 
                 if ($statusMessage->getRedirect()) {
-                    header('Refresh: 2; url=' . $statusMessage->getRedirectURL());
+                    $redirectUrl = $statusMessage->getRedirectURL();
+                    // echo 'goto ' . $redirectUrl;
+                    header('Refresh: 2; url=' . $redirectUrl);
+                    ?>
+                    <script>
+                        setTimeout(function () {
+                            window.location.href = "<?= $redirectUrl ?>";
+                        }, 2000);
+                    </script>
+                    <?php
                     exit();
                 }
                 ?>
@@ -332,7 +345,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['role'])) {
                             <?php endif; ?>
                             <?php
                             if (!$editMode) {
-                                echo '<img class="avis_star" src="images/star_' . $avis->getNote() . '.png" alt="' . $avis->getNote() . ' sur 5">';
+                                echo '<img class="avis_star" src="' . BASE_URL_IMAGE . 'star_' . $avis->getNote() . '.png" alt="' . $avis->getNote() . ' sur 5">';
                             }
                             ?>
                         </div>
@@ -363,7 +376,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['role'])) {
 
     </main>
 
-    <?php include 'footer.php' ?>
+    <?php include ROOT_PATH . 'footer.php' ?>
 
 </body>
 

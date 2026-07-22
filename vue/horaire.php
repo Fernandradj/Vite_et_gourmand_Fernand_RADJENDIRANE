@@ -1,19 +1,20 @@
-<?php include 'imports.php' ?>
-<?php include 'session.php' ?>
+<?php require_once '../config.php'; ?>
+<?php include ROOT_PATH . 'imports.php' ?>
+<?php include ROOT_PATH . 'session.php' ?>
 
-<?php include 'html.php' ?>
+<?php include ROOT_PATH . 'html.php' ?>
 
 <head>
-    <?php include 'head.php' ?>
-    <link rel="stylesheet" href="./styles/horaire.css" type="text/css">
-    <title></title>
+    <?php include ROOT_PATH . 'head.php' ?>
+    <link rel="stylesheet" href="../styles/horaire.css" type="text/css">
+    <title>Horaire</title>
 </head>
 
 <?php
 $horaireDAO = new HoraireDAO($pdo);
 $horaires = $horaireDAO->loadHoraire();
 
-require_once($currentFolder . "/controler/HoraireControleur.php");
+require_once($currentFolder . "../controler/HoraireControleur.php");
 $controller = new HoraireControleur();
 $controller->handleRequest($pdo);
 
@@ -21,7 +22,7 @@ $controller->handleRequest($pdo);
 
 <body>
 
-    <?php include 'header.php' ?>
+    <?php include ROOT_PATH . 'header.php' ?>
 
 
     <!-- main -->
@@ -61,7 +62,7 @@ $controller->handleRequest($pdo);
 
     </main>
 
-    <?php include 'footer.php' ?>
+    <?php include ROOT_PATH . 'footer.php' ?>
 
 </body>
 

@@ -1,17 +1,21 @@
-<?php include 'imports.php' ?>
-<?php include 'session.php' ?>
+<?php
+ob_start();
+require_once '../config.php';
+?>
+<?php include ROOT_PATH . 'imports.php' ?>
+<?php include ROOT_PATH . 'session.php' ?>
 
-<?php include 'html.php' ?>
+<?php include ROOT_PATH . 'html.php' ?>
 
 <head>
-    <?php include 'head.php' ?>
+    <?php include ROOT_PATH . 'head.php' ?>
 
     <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script>
     <!-- <script src="https://unpkg.com/@webgeodatavore/photon-geocoder-autocomplete@2.0.1/dist/photon-geocoder-autocomplete.min.js"></script> -->
     <link rel="stylesheet"
         href="https://unpkg.com/@webgeodatavore/photon-geocoder-autocomplete@2.0.1/dist/photon-geocoder-autocomplete.min.css"
         type="text/css">
-    <link rel="stylesheet" href="./styles/commande.css" type="text/css">
+    <link rel="stylesheet" href="<?php echo BASE_URL_STYLE . "commande.css" ?>" type=" text/css">
     <title></title>
 </head>
 
@@ -49,7 +53,7 @@ $suivis = [];
 $commandeDAO = new CommandeDAO($pdo);
 $menuDAO = new MenuDAO($pdo);
 
-require_once($currentFolder . "/controler/CommandeControleur.php");
+require_once($currentFolder . "../controler/CommandeControleur.php");
 $controller = new CommandeControleur();
 
 if (isset($_GET["menuId"])) {
@@ -95,7 +99,7 @@ if (isset($_GET["menuId"])) {
 
 <body>
 
-    <?php include 'header.php' ?>
+    <?php include ROOT_PATH . 'header.php' ?>
 
     <!-- main -->
     <main>
@@ -106,8 +110,16 @@ if (isset($_GET["menuId"])) {
             include 'message.php';
 
             if ($statusMessage->getRedirect()) {
-                // echo 'goto ' . $statusMessage->getRedirectURL();
-                header('Refresh: 2; url=' . $statusMessage->getRedirectURL());
+                $redirectUrl = $statusMessage->getRedirectURL();
+                // echo 'goto ' . $redirectUrl;
+                header('Refresh: 2; url=' . $redirectUrl);
+                ?>
+                <script>
+                    setTimeout(function () {
+                        window.location.href = "<?= $redirectUrl ?>";
+                    }, 2000);
+                </script>
+                <?php
                 exit();
             }
             ?>
@@ -395,43 +407,44 @@ if (isset($_GET["menuId"])) {
                                 </p>
 
                                 <?php if ($firstCommande && $utilisateur->userIsClient()): ?>
-                                    <button id="submitBtn" type="submit" class="read_more_btn"
+                                    <button id="submitBtn1" type="submit" class="read_more_btn"
                                         name="commander">Commander</button>
                                 <?php endif; ?>
 
                                 <?php if (($commande != null) && ($commande->isCommande())): ?>
-                                    <button id="submitBtn" type="submit" class="read_more_btn"
+                                    <button id="submitBtn2" type="submit" class="read_more_btn"
                                         name="modifier">Modifier</button>
-                                    <button id="submitBtn" type="submit" class="read_more_btn"
+                                    <button id="submitBtn3" type="submit" class="read_more_btn"
                                         name="annuler">Annuler</button>
                                 <?php endif; ?>
 
                                 <?php if (($commande != null) && ($commande->isCommande()) && $utilisateur->userIsEmploye()): ?>
-                                    <button id="submitBtn" type="submit" class="read_more_btn"
+                                    <button id="submitBtn4" type="submit" class="read_more_btn"
                                         name="valider">Valider</button>
                                 <?php endif; ?>
 
                                 <?php if (($commande != null) && ($commande->isValide()) && $utilisateur->userIsEmploye()): ?>
-                                    <button id="submitBtn" type="submit" class="read_more_btn"
+                                    <button id="submitBtn5" type="submit" class="read_more_btn"
                                         name="preparer">Préparer</button>
                                 <?php endif; ?>
 
                                 <?php if (($commande != null) && ($commande->isEnPreparation()) && $utilisateur->userIsEmploye()): ?>
-                                    <button id="submitBtn" type="submit" class="read_more_btn"
+                                    <button id="submitBtn6" type="submit" class="read_more_btn"
                                         name="expedier">Expédier</button>
                                 <?php endif; ?>
 
                                 <?php if (($commande != null) && ($commande->isExpedie()) && $utilisateur->userIsEmploye()): ?>
-                                    <button id="submitBtn" type="submit" class="read_more_btn" name="livrer">Livrer</button>
+                                    <button id="submitBtn7" type="submit" class="read_more_btn"
+                                        name="livrer">Livrer</button>
                                 <?php endif; ?>
 
                                 <?php if (($commande != null) && ($commande->isAttenteRetour()) && $utilisateur->userIsEmploye()): ?>
-                                    <button id="submitBtn" type="submit" class="read_more_btn"
+                                    <button id="submitBtn8" type="submit" class="read_more_btn"
                                         name="terminer">Terminer</button>
                                 <?php endif; ?>
 
                                 <?php if (($commande != null) && ($commande->isTermine()) && $utilisateur->userIsClient()): ?>
-                                    <button id="submitBtn" type="submit" class="read_more_btn"
+                                    <button id="submitBtn9" type="submit" class="read_more_btn"
                                         name="donnerAvis">Noter</button>
                                 <?php endif; ?>
 
@@ -445,15 +458,13 @@ if (isset($_GET["menuId"])) {
 
     </main>
 
-
-
-    <?php include 'footer.php' ?>
+    <?php include ROOT_PATH . 'footer.php' ?>
 
     <script
         src="https://unpkg.com/@webgeodatavore/photon-geocoder-autocomplete@2.0.1/dist/photon-geocoder-autocomplete.min.js">
         </script>
 
-    <script src="./scripts/commande.js"></script>
+    <script src="<?php echo BASE_URL_SCRIPT . "commande.js" ?>"></script>
 
 </body>
 

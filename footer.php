@@ -37,13 +37,13 @@
 
 
             <div>
-                <a class="footer_mention" href="mention_legale.php">Mentions Légales</a>
+                <a class="footer_mention" href="<?php echo BASE_URL_VUE."mention_legale.php"?>">Mentions Légales</a>
 
             </div>
 
             <div class="footer_condition_section">
 
-                <a class="condition_text" href="conditions_generales.php">Conditions Générales
+                <a class="condition_text" href="<?php echo BASE_URL_VUE."conditions_generales.php"?>">Conditions Générales
                 </a>
             </div>
         </div>

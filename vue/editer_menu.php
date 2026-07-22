@@ -1,7 +1,10 @@
-<?php include 'imports.php' ?>
-<?php include 'session.php' ?>
+<?php
+ob_start();
+require_once '../config.php'; ?>
+<?php include ROOT_PATH . 'imports.php' ?>
+<?php include ROOT_PATH . 'session.php' ?>
 
-<?php include 'html.php' ?>
+<?php include ROOT_PATH . 'html.php' ?>
 
 <?php
 
@@ -29,15 +32,15 @@ $controller->handleRequest($pdo);
 ?>
 
 <head>
-    <?php include 'head.php' ?>
+    <?php include ROOT_PATH . 'head.php' ?>
     <link href="https://cdn.jsdelivr.net/npm/@coreui/coreui-pro@5.21.1/dist/css/coreui.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles/menu.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL_STYLE . "menu.css" ?>">
     <title></title>
 </head>
 
 <body>
 
-    <?php include 'header.php' ?>
+    <?php include ROOT_PATH . 'header.php' ?>
 
 
     <!-- main -->
@@ -52,8 +55,16 @@ $controller->handleRequest($pdo);
                 include 'message.php';
 
                 if ($statusMessage->getRedirect()) {
-                    // echo 'goto ' . $statusMessage->getRedirectURL();
-                    header('Refresh: 2; url=' . $statusMessage->getRedirectURL());
+                    $redirectUrl = $statusMessage->getRedirectURL();
+                    // echo 'goto ' . $redirectUrl;
+                    header('Refresh: 2; url=' . $redirectUrl);
+                    ?>
+                    <script>
+                        setTimeout(function () {
+                            window.location.href = "<?= $redirectUrl ?>";
+                        }, 2000);
+                    </script>
+                    <?php
                     exit();
                 }
                 ?>
@@ -280,7 +291,7 @@ $controller->handleRequest($pdo);
 
     <script defer src="https://cdn.jsdelivr.net/npm/@coreui/coreui-pro@5.21.1/dist/js/coreui.bundle.min.js"></script>
 
-    <?php include 'footer.php' ?>
+    <?php include ROOT_PATH . 'footer.php' ?>
 
 </body>
 

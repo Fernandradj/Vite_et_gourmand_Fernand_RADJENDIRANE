@@ -34,7 +34,7 @@ class AvisControleur
                 $this->actionResult->setRedirect(true);
 
                 $avisId = $avisDAO->loadAvisIdOfCommande($commandeId);
-                $this->actionResult->setRedirectURL('http://localhost:3000/Vite_et_gourmand_Fernand_RADJENDIRANE/detail_avis.php?avisId=' . $avisId);
+                $this->actionResult->setRedirectURL(BASE_URL_VUE . 'detail_avis.php?avisId=' . $avisId);
             } else {
                 $this->actionResult->setSucceeded(false);
                 $this->actionResult->setMessage($result->getMessage());
@@ -58,7 +58,7 @@ class AvisControleur
             $this->actionResult->setMessage($result->getMessage());
             $this->actionResult->setDisplay_type(Resultat::DISPLAY_TYPE_POPUP);
             $this->actionResult->setRedirect(true);
-            $this->actionResult->setRedirectURL('http://localhost:3000/Vite_et_gourmand_Fernand_RADJENDIRANE/detail_avis.php?avisId=' . $avisId);
+            $this->actionResult->setRedirectURL(BASE_URL_VUE . 'detail_avis.php?avisId=' . $avisId);
         } else {
             $this->actionResult->setSucceeded(false);
             $this->actionResult->setMessage($result->getMessage());
@@ -76,7 +76,7 @@ class AvisControleur
             $this->actionResult->setMessage($result->getMessage());
             $this->actionResult->setDisplay_type(Resultat::DISPLAY_TYPE_POPUP);
             $this->actionResult->setRedirect(true);
-            $this->actionResult->setRedirectURL('http://localhost:3000/Vite_et_gourmand_Fernand_RADJENDIRANE/detail_avis.php?avisId=' . $avisId);
+            $this->actionResult->setRedirectURL(BASE_URL_VUE . 'detail_avis.php?avisId=' . $avisId);
         } else {
             $this->actionResult->setSucceeded(false);
             $this->actionResult->setMessage($result->getMessage());

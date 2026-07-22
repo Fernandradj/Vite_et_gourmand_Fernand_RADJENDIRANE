@@ -25,12 +25,12 @@ class CommandeControleur
         } else if (isset($_POST['modifier'])) {
             $this->modifierCommande($commande_id);
         } else if (isset($_POST['donnerAvis'])) {
-            $avisDAO=new AvisDAO($pdo);
+            $avisDAO = new AvisDAO($pdo);
             $avisId = $avisDAO->loadAvisIdOfCommande($commande_id);
             if ($avisId != 0) {
-                header("Location: http://localhost:3000/Vite_et_gourmand_Fernand_RADJENDIRANE/detail_avis.php?avisId=" . $avisId);
+                header('Location: ' . BASE_URL_VUE . 'detail_avis.php?avisId=' . $avisId);
             } else {
-                header("Location: http://localhost:3000/Vite_et_gourmand_Fernand_RADJENDIRANE/detail_avis.php?commandeId=" . $commande_id);
+                header('Location: ' . BASE_URL_VUE . 'detail_avis.php?commandeId=' . $commande_id);
             }
         } else if (isset($_POST['valider'])) {
             $this->validerCommande($commande_id);
@@ -81,7 +81,7 @@ class CommandeControleur
 
                     $numero_commande = $commandeDAO->loadLastCommandeOfUser($utilisateur_id);
 
-                    $this->actionResult->setRedirectURL('http://localhost:3000/Vite_et_gourmand_Fernand_RADJENDIRANE/commande.php?commandeId=' . $numero_commande);
+                    $this->actionResult->setRedirectURL(BASE_URL_VUE . 'commande.php?commandeId=' . $numero_commande);
                 } else {
                     $this->actionResult->setSucceeded(false);
                     $this->actionResult->setMessage($result->getMessage());
@@ -93,7 +93,7 @@ class CommandeControleur
                 $this->actionResult->setDisplay_type(Resultat::DISPLAY_TYPE_POPUP);
 
                 $this->actionResult->setRedirect(true);
-                $this->actionResult->setRedirectURL('http://localhost:3000/Vite_et_gourmand_Fernand_RADJENDIRANE/menus.php');
+                $this->actionResult->setRedirectURL(BASE_URL_VUE . 'menus.php');
             }
         } else {
             // display message
@@ -116,7 +116,7 @@ class CommandeControleur
             $this->actionResult->setMessage($result->getMessage());
             $this->actionResult->setDisplay_type(Resultat::DISPLAY_TYPE_POPUP);
             $this->actionResult->setRedirect(true);
-            $this->actionResult->setRedirectURL('http://localhost:3000/Vite_et_gourmand_Fernand_RADJENDIRANE/commande.php?commandeId=' . $commandeId);
+            $this->actionResult->setRedirectURL(BASE_URL_VUE . 'commande.php?commandeId=' . $commandeId);
         } else {
             $this->actionResult->setSucceeded(false);
             $this->actionResult->setMessage($result->getMessage());
@@ -133,12 +133,12 @@ class CommandeControleur
         $plat_id = htmlspecialchars($_POST["plat"]);
         $dessert_id = htmlspecialchars($_POST["dessert"]);
         $entree_id = htmlspecialchars($_POST["entree"]);
-        $nombrePersonne = htmlspecialchars($_POST["nb_personne"]);
-        $totale_cmd = htmlspecialchars($_POST["totale_commande"]);
-        $prix_liv = htmlspecialchars($_POST["totale_livraison"]);
-        $prix_distance = htmlspecialchars($_POST["distance_livraison"]);
-        $reduction = htmlspecialchars($_POST["reduction"]);
-        $prix_totale = htmlspecialchars($_POST["prix_totale"]);
+        $nombrePersonne = (int) htmlspecialchars($_POST["nb_personne"]);
+        $totale_cmd = (float) htmlspecialchars($_POST["totale_commande"]);
+        $prix_liv = (float) htmlspecialchars($_POST["totale_livraison"]);
+        $prix_distance = (float) htmlspecialchars($_POST["distance_livraison"]);
+        $reduction = (float) htmlspecialchars($_POST["reduction"]);
+        $prix_totale = (float) htmlspecialchars($_POST["prix_totale"]);
         $pret_materiel = (isset($_POST['pret_materiel'])) ? 1 : 0;
         $restitution_materiel = (isset($_POST['restitution_materiel'])) ? 1 : 0;
         $commandeDAO = new CommandeDAO($this->pdo);
@@ -148,7 +148,7 @@ class CommandeControleur
             $this->actionResult->setMessage($result->getMessage());
             $this->actionResult->setDisplay_type(Resultat::DISPLAY_TYPE_POPUP);
             $this->actionResult->setRedirect(true);
-            $this->actionResult->setRedirectURL('http://localhost:3000/Vite_et_gourmand_Fernand_RADJENDIRANE/commande.php?commandeId=' . $commandeId);
+            $this->actionResult->setRedirectURL(BASE_URL_VUE . 'commande.php?commandeId=' . $commandeId);
         } else {
             $this->actionResult->setSucceeded(false);
             $this->actionResult->setMessage($result->getMessage());
@@ -167,7 +167,7 @@ class CommandeControleur
             $this->actionResult->setMessage($result->getMessage());
             $this->actionResult->setDisplay_type(Resultat::DISPLAY_TYPE_POPUP);
             $this->actionResult->setRedirect(true);
-            $this->actionResult->setRedirectURL('http://localhost:3000/Vite_et_gourmand_Fernand_RADJENDIRANE/commande.php?commandeId=' . $commandeId);
+            $this->actionResult->setRedirectURL(BASE_URL_VUE . 'commande.php?commandeId=' . $commandeId);
         } else {
             $this->actionResult->setSucceeded(false);
             $this->actionResult->setMessage($result->getMessage());
@@ -186,7 +186,7 @@ class CommandeControleur
             $this->actionResult->setMessage($result->getMessage());
             $this->actionResult->setDisplay_type(Resultat::DISPLAY_TYPE_POPUP);
             $this->actionResult->setRedirect(true);
-            $this->actionResult->setRedirectURL('http://localhost:3000/Vite_et_gourmand_Fernand_RADJENDIRANE/commande.php?commandeId=' . $commandeId);
+            $this->actionResult->setRedirectURL(BASE_URL_VUE . 'commande.php?commandeId=' . $commandeId);
         } else {
             $this->actionResult->setSucceeded(false);
             $this->actionResult->setMessage($result->getMessage());
@@ -204,7 +204,7 @@ class CommandeControleur
             $this->actionResult->setMessage($result->getMessage());
             $this->actionResult->setDisplay_type(Resultat::DISPLAY_TYPE_POPUP);
             $this->actionResult->setRedirect(true);
-            $this->actionResult->setRedirectURL('http://localhost:3000/Vite_et_gourmand_Fernand_RADJENDIRANE/commande.php?commandeId=' . $commandeId);
+            $this->actionResult->setRedirectURL(BASE_URL_VUE . 'commande.php?commandeId=' . $commandeId);
         } else {
             $this->actionResult->setSucceeded(false);
             $this->actionResult->setMessage($result->getMessage());
@@ -224,7 +224,7 @@ class CommandeControleur
             $this->actionResult->setMessage($result->getMessage());
             $this->actionResult->setDisplay_type(Resultat::DISPLAY_TYPE_POPUP);
             $this->actionResult->setRedirect(true);
-            $this->actionResult->setRedirectURL('http://localhost:3000/Vite_et_gourmand_Fernand_RADJENDIRANE/commande.php?commandeId=' . $commandeId);
+            $this->actionResult->setRedirectURL(BASE_URL_VUE . 'commande.php?commandeId=' . $commandeId);
         } else {
             $this->actionResult->setSucceeded(false);
             $this->actionResult->setMessage($result->getMessage());
@@ -243,7 +243,7 @@ class CommandeControleur
             $this->actionResult->setMessage($result->getMessage());
             $this->actionResult->setDisplay_type(Resultat::DISPLAY_TYPE_POPUP);
             $this->actionResult->setRedirect(true);
-            $this->actionResult->setRedirectURL('http://localhost:3000/Vite_et_gourmand_Fernand_RADJENDIRANE/commande.php?commandeId=' . $commandeId);
+            $this->actionResult->setRedirectURL(BASE_URL_VUE . 'commande.php?commandeId=' . $commandeId);
         } else {
             $this->actionResult->setSucceeded(false);
             $this->actionResult->setMessage($result->getMessage());

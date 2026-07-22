@@ -1,22 +1,23 @@
-<?php include 'imports.php' ?>
-<?php include 'session.php' ?>
+<?php require_once 'config.php'; ?>
+<?php include ROOT_PATH . 'imports.php' ?>
+<?php include ROOT_PATH . 'session.php' ?>
 
-<?php include 'html.php' ?>
+<?php include ROOT_PATH . 'html.php' ?>
 
 <head>
-    <?php include 'head.php' ?>
+    <?php include ROOT_PATH . 'head.php' ?>
     <title>Vite et Gourmand</title>
 </head>
 
 <body>
 
-    <?php include 'header.php' ?>
+    <?php include ROOT_PATH . 'header.php' ?>
 
     <!-- main -->
     <main>
         <div class="home_main_section">
             <p class="home_main_title">Bien manger n'a jamais été aussi rapide.</p>
-            <a class="btn_go" href="menus.php">C'est parti !!!</a>
+            <a class="btn_go" href="<?php echo BASE_URL_VUE . "menus.php" ?>">C'est parti !!!</a>
         </div>
 
         <!-- description entreprise -->
@@ -33,7 +34,8 @@
                             temps record.</p>
                     </div>
                     <div class="col-md-6">
-                        <img src="images/cuisine.png" alt="Hero Image" class="img-fluid hero-image">
+                        <img src="<?php echo BASE_URL_IMAGE . "cuisine.png" ?>" alt="Hero Image"
+                            class="img-fluid hero-image">
                     </div>
                 </div>
             </div>
@@ -45,7 +47,8 @@
             <div class="">
                 <div class="row align-items-center">
                     <div class="col-md-6">
-                        <img src="images/equipe.png" alt="Hero Image" class="img-fluid hero-image">
+                        <img src="<?php echo BASE_URL_IMAGE . "equipe.png" ?>" alt="Hero Image"
+                            class="img-fluid hero-image">
                     </div>
                     <div class="col-md-6">
                         <h1 class="hero-title">L'Équipe : Les Artisans du Goût et du Mouvement</h1>
@@ -82,7 +85,8 @@
                     <!-- Team Member 1 -->
                     <div class="col-lg-3 col-md-6">
                         <div class="team-member text-center p-4">
-                            <img src="images/cuisine_logo.png" alt="Team Member 1" class="mb-4 shadow">
+                            <img src="<?php echo BASE_URL_IMAGE . "cuisine_logo.png" ?>" alt="Team Member 1"
+                                class="mb-4 shadow">
                             <h5 class="mb-1">Cuisine</h5>
                             <!-- <p class="text-muted mb-3">CEO & Founder</p> -->
                             <p class="small mb-3">Une brigade passionnée qui transforme des produits frais en créations
@@ -94,7 +98,8 @@
                     <!-- Team Member 2 -->
                     <div class="col-lg-3 col-md-6">
                         <div class="team-member text-center p-4">
-                            <img src="images/livraison_logo.png" alt="Team Member 2" class="mb-4 shadow">
+                            <img src="<?php echo BASE_URL_IMAGE . "livraison_logo.png" ?>" alt="Team Member 2"
+                                class="mb-4 shadow">
                             <h5 class="mb-1">Livraison</h5>
                             <!-- <p class="text-muted mb-3">Tech Lead</p> -->
                             <p class="small mb-3">Un service logistique ultra-réactif garantissant l'arrivée de vos
@@ -106,7 +111,8 @@
                     <!-- Team Member 3 -->
                     <div class="col-lg-3 col-md-6">
                         <div class="team-member text-center p-4">
-                            <img src="images/sav logo.png" alt="Team Member 3" class="mb-4 shadow">
+                            <img src="<?php echo BASE_URL_IMAGE . "sav logo.png" ?>" alt="Team Member 3"
+                                class="mb-4 shadow">
                             <h5 class="mb-1">SAV</h5>
                             <!-- <p class="text-muted mb-3">Design Director</p> -->
                             <p class="small mb-3">Une équipe attentive et disponible, dédiée à votre satisfaction pour
@@ -128,6 +134,7 @@
 
                 <?php
 
+                $avisDAO = new AvisDAO($pdo);
                 $avis_list = $avisDAO->loadBestAvis();
                 // print_r($avis);
                 
@@ -175,7 +182,7 @@
 
     </main>
 
-    <?php include 'footer.php' ?>
+    <?php include ROOT_PATH . 'footer.php' ?>
 
 </body>
 

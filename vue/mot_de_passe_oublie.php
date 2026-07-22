@@ -1,5 +1,6 @@
-<?php include 'imports.php' ?>
-<?php include 'session.php' ?>
+<?php require_once '../config.php'; ?>
+<?php include ROOT_PATH . 'imports.php' ?>
+<?php include ROOT_PATH . 'session.php' ?>
 
 <?php
 
@@ -58,17 +59,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 
 
-
-<?php include 'html.php' ?>
+<?php include ROOT_PATH . 'html.php' ?>
 
 <head>
-    <?php include 'head.php' ?>
+    <?php include ROOT_PATH . 'head.php' ?>
     <title>Mot de passe oublié</title>
 </head>
 
 <body>
 
-    <?php include 'header.php' ?>
+    <?php include ROOT_PATH . 'header.php' ?>
 
 
     <!-- main -->
@@ -95,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     </main>
 
-    <?php include 'footer.php' ?>
+    <?php include ROOT_PATH . 'footer.php' ?>
 
 </body>
 

@@ -1,5 +1,6 @@
-<?php include 'imports.php' ?>
-<?php include 'session.php' ?>
+<?php require_once '../config.php'; ?>
+<?php include ROOT_PATH . 'imports.php' ?>
+<?php include ROOT_PATH . 'session.php' ?>
 
 <?php
 
@@ -15,17 +16,17 @@ $controller->handleRequest($pdo);
 
 ?>
 
-<?php include 'html.php' ?>
+<?php include ROOT_PATH . 'html.php' ?>
 
 <head>
-    <?php include 'head.php' ?>
+    <?php include ROOT_PATH . 'head.php' ?>
     <link rel="stylesheet" href="styles/compte_utilisateurs.css">
-    <title>Eco Ride</title>
+    <title>Comptes utilisateurs</title>
 </head>
 
 <body>
 
-    <?php include 'header.php' ?>
+    <?php include ROOT_PATH . 'header.php' ?>
     <!-- main -->
     <main>
 
@@ -94,7 +95,7 @@ $controller->handleRequest($pdo);
         </div>
     </main>
 
-    <?php include 'footer.php' ?>
+    <?php include ROOT_PATH . 'footer.php' ?>
 
 </body>
 
