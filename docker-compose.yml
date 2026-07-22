@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  # Le serveur Web & PHP
+  web:
+    build: .
+    container_name: php_mvc_app
+    ports:
+      - "8080:80" # Permet d'accéder au site via http://localhost:8080
+    volumes:
+      - .:/var/www/html # Synchronise votre code local avec le conteneur (les modifs dans VS Code sont instantanées !)
+    depends_on:
+      - db
+
+  # La Base de données (MySQL)
+  db:
+    image: mysql:8.0
+    container_name: php_mvc_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: ma_base_de_donnees
+      MYSQL_USER: user_php
+      MYSQL_PASSWORD: user_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:

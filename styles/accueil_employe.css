@@ -1,5 +1,20 @@
 .menu_header {
+    /* display: flex; */
+    /* justify-content: space-between; */
+    /* align-items: center; */
+}
+
+.canvasjs-chart-canvas {
+    /* height: 300px !important;
+    width: 550px !important; */
+}
+
+.chartContainer {}
+
+.chartSection {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    max-width: 70%;
 }

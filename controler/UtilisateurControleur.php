@@ -19,13 +19,14 @@ class UtilisateurControleur
     {
         if (isset($_POST['users']) && !empty($_POST['users'])) {
             $userIds = $_POST['users'];
-            $result = Utilisateur::suspendreUtilisateurs($userIds, $this->pdo);
+            $userDAO = new UtilisateurDAO($this->pdo);
+            $result = $userDAO->suspendreUtilisateurs($userIds);
             if ($result->getSucceeded()) {
                 $this->actionResult->setSucceeded(true);
                 $this->actionResult->setMessage($result->getMessage());
                 $this->actionResult->setDisplay_type(Resultat::DISPLAY_TYPE_POPUP);
                 $this->actionResult->setRedirect(true);
-                $this->actionResult->setRedirectURL('http://localhost:3000/Vite_et_gourmand_Fernand_RADJENDIRANE/compte_utilisateurs.php');
+                $this->actionResult->setRedirectURL(BASE_URL_VUE . 'compte_utilisateurs.php');
             } else {
                 $this->actionResult->setSucceeded(false);
                 $this->actionResult->setMessage($result->getMessage());

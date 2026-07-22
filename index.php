@@ -1,22 +1,23 @@
-<?php include 'imports.php' ?>
-<?php include 'session.php' ?>
+<?php require_once 'config.php'; ?>
+<?php include ROOT_PATH . 'imports.php' ?>
+<?php include ROOT_PATH . 'session.php' ?>
 
-<?php include 'html.php' ?>
+<?php include ROOT_PATH . 'html.php' ?>
 
 <head>
-    <?php include 'head.php' ?>
+    <?php include ROOT_PATH . 'head.php' ?>
     <title>Vite et Gourmand</title>
 </head>
 
 <body>
 
-    <?php include 'header.php' ?>
+    <?php include ROOT_PATH . 'header.php' ?>
 
     <!-- main -->
     <main>
         <div class="home_main_section">
-            <p class="home_main_title">Ensemble sur la route, pour un avenir durable</p>
-            <a class="btn_go" href="menus.php">C'est parti !!!</a>
+            <p class="home_main_title">Bien manger n'a jamais été aussi rapide.</p>
+            <a class="btn_go" href="<?php echo BASE_URL_VUE . "menus.php" ?>">C'est parti !!!</a>
         </div>
 
         <!-- description entreprise -->
@@ -24,14 +25,17 @@
             <div class="">
                 <div class="row align-items-center">
                     <div class="col-md-6">
-                        <h1 class="hero-title">Welcome to Our Website</h1>
-                        <p class="hero-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-                            commodo urna magna,
-                            vel faucibus tellus mattis vitae.</p>
+                        <h1 class="hero-title">L'Équilibre : La Haute Cuisine à la Vitesse de l'Éclair</h1>
+                        <p class="hero-description">Pourquoi choisir entre un repas d'exception et un emploi du temps
+                            chargé ? Chez Vite et Gourmand, nous avons supprimé le compromis. Notre carte propose une
+                            cuisine créative, élaborée à partir de produits frais et locaux, conçue spécifiquement pour
+                            voyager sans perdre sa texture ni ses saveurs. Que vous soyez au bureau ou dans votre salon,
+                            nous transformons votre pause repas en une véritable escale gastronomique, le tout en un
+                            temps record.</p>
                     </div>
                     <div class="col-md-6">
-                        <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHw3fHxoZXJvfGVufDB8MHx8fDE3MTIwNzMwNDh8MA&ixlib=rb-4.0.3&q=80&w=1080"
-                            alt="Hero Image" class="img-fluid hero-image">
+                        <img src="<?php echo BASE_URL_IMAGE . "cuisine.png" ?>" alt="Hero Image"
+                            class="img-fluid hero-image">
                     </div>
                 </div>
             </div>
@@ -43,14 +47,22 @@
             <div class="">
                 <div class="row align-items-center">
                     <div class="col-md-6">
-                        <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHw3fHxoZXJvfGVufDB8MHx8fDE3MTIwNzMwNDh8MA&ixlib=rb-4.0.3&q=80&w=1080"
-                            alt="Hero Image" class="img-fluid hero-image">
+                        <img src="<?php echo BASE_URL_IMAGE . "equipe.png" ?>" alt="Hero Image"
+                            class="img-fluid hero-image">
                     </div>
                     <div class="col-md-6">
-                        <h1 class="hero-title">Welcome to Our Website</h1>
-                        <p class="hero-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-                            commodo urna magna,
-                            vel faucibus tellus mattis vitae.</p>
+                        <h1 class="hero-title">L'Équipe : Les Artisans du Goût et du Mouvement</h1>
+                        <p class="hero-description">À la tête de la cuisine, notre chef cuisinier voit chaque plat
+                            comme un défi technique. Sa mission ? Créer des recettes audacieuses qui
+                            conservent toute leur âme, de la première découpe en cuisine jusqu’à l'ouverture de votre
+                            boîte de livraison.
+                        </p>
+                        <p class="hero-description">
+                            Nos livreurs ne sont pas de simples coursiers ; ils sont le dernier maillon de notre chaîne
+                            d'excellence. Leur priorité est double : veiller à ce que votre
+                            commande arrive chaude (ou parfaitement fraîche) et vous l'apporter avec un sourire qui
+                            prouve que l'efficacité peut aussi être chaleureuse.
+                        </p>
                     </div>
 
                 </div>
@@ -62,8 +74,9 @@
                 <!-- Section Header -->
                 <div class="service_title_section text-center mb-5">
                     <div class="col-12">
-                        <h2 class="section-title">Meet Our Team</h2>
-                        <p class="text-muted">Dedicated professionals working together to achieve excellence</p>
+                        <h2 class="section-title">Découvrez notre équipe</h2>
+                        <p class="text-muted">Des professionnels dévoués travaillant ensemble pour atteindre
+                            l'excellence</p>
                     </div>
                 </div>
 
@@ -72,12 +85,12 @@
                     <!-- Team Member 1 -->
                     <div class="col-lg-3 col-md-6">
                         <div class="team-member text-center p-4">
-                            <img src="https://randomuser.me/api/portraits/women/64.jpg" alt="Team Member 1"
+                            <img src="<?php echo BASE_URL_IMAGE . "cuisine_logo.png" ?>" alt="Team Member 1"
                                 class="mb-4 shadow">
-                            <h5 class="mb-1">Sarah Johnson</h5>
-                            <p class="text-muted mb-3">CEO & Founder</p>
-                            <p class="small mb-3">Leading our company's vision and strategy with over 15 years of
-                                experience.</p>
+                            <h5 class="mb-1">Cuisine</h5>
+                            <!-- <p class="text-muted mb-3">CEO & Founder</p> -->
+                            <p class="small mb-3">Une brigade passionnée qui transforme des produits frais en créations
+                                gourmandes, alliant rigueur technique et saveurs authentiques.</p>
 
                         </div>
                     </div>
@@ -85,11 +98,12 @@
                     <!-- Team Member 2 -->
                     <div class="col-lg-3 col-md-6">
                         <div class="team-member text-center p-4">
-                            <img src="https://randomuser.me/api/portraits/men/64.jpg" alt="Team Member 2"
+                            <img src="<?php echo BASE_URL_IMAGE . "livraison_logo.png" ?>" alt="Team Member 2"
                                 class="mb-4 shadow">
-                            <h5 class="mb-1">Michael Chen</h5>
-                            <p class="text-muted mb-3">Tech Lead</p>
-                            <p class="small mb-3">Driving innovation and technical excellence in all our projects.</p>
+                            <h5 class="mb-1">Livraison</h5>
+                            <!-- <p class="text-muted mb-3">Tech Lead</p> -->
+                            <p class="small mb-3">Un service logistique ultra-réactif garantissant l'arrivée de vos
+                                plats à température idéale et dans un délai record.</p>
 
                         </div>
                     </div>
@@ -97,11 +111,12 @@
                     <!-- Team Member 3 -->
                     <div class="col-lg-3 col-md-6">
                         <div class="team-member text-center p-4">
-                            <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="Team Member 3"
+                            <img src="<?php echo BASE_URL_IMAGE . "sav logo.png" ?>" alt="Team Member 3"
                                 class="mb-4 shadow">
-                            <h5 class="mb-1">Emily Martinez</h5>
-                            <p class="text-muted mb-3">Design Director</p>
-                            <p class="small mb-3">Creating beautiful and intuitive designs that users love.</p>
+                            <h5 class="mb-1">SAV</h5>
+                            <!-- <p class="text-muted mb-3">Design Director</p> -->
+                            <p class="small mb-3">Une équipe attentive et disponible, dédiée à votre satisfaction pour
+                                que chaque expérience soit aussi fluide que savoureuse.</p>
 
                         </div>
                     </div>
@@ -113,12 +128,14 @@
         <!-- Review section -->
         <section class="testimonial py-5 bg-light">
 
-            <h2 class="text-center mb-5">What Our Clients Say</h2>
+            <h2 class="text-center mb-5">
+                Ce que disent nos clients</h2>
             <div class="review_section">
 
                 <?php
 
-                $avis_list = Avis::loadBestAvis($pdo);
+                $avisDAO = new AvisDAO($pdo);
+                $avis_list = $avisDAO->loadBestAvis();
                 // print_r($avis);
                 
                 if (!empty($avis_list)) {
@@ -126,7 +143,7 @@
                         echo "<div class='col-md-4 mb-4 review_item'>";
                         echo '<div class="card">';
                         echo '<div class="card-body text-center">';
-                        echo '<img src="image.php?userId="' . $avis->getSoumisPar()->getId() . '" alt="Image depuis la BDD">';
+                        echo '<img class="avis_image" src="image.php?userId=' . $avis->getSoumisPar()->getId() . '" alt="Image depuis la BDD">';
                         echo '<h5 class="card-title">' . $avis->getSoumisPar()->getFullName() . '</h5>';
                         echo '<p class="card-text text-muted">' . $avis->getCommande()->getMenu()->getNom() . '</p>';
                         echo '<p class="card-text">' . $avis->getCommentaire() . '</p>';
@@ -165,7 +182,7 @@
 
     </main>
 
-    <?php include 'footer.php' ?>
+    <?php include ROOT_PATH . 'footer.php' ?>
 
 </body>
 

@@ -1,14 +1,15 @@
 <?php
 
 $db_server = "localhost";
+// $db_server = "mysql-viteetgourmand23.alwaysdata.net";
 // $db_user = "root";
 // $db_pass = "";
 // $db_name = "viteetgourmand";
 $pdo = "";
 
-$db_user = "431868_db";
-$db_pass = "Rfernand23*";
-$db_name = "viteetgourmand";
+$db_user = "viteetgourmand23";
+$db_pass = "bddviteetgourmand23*";
+$db_name = "viteetgourmand23_bdd";
 
 define("MIN_NOTE_AVIS",3);
 

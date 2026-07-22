@@ -12,8 +12,7 @@ class MenuControleur
 
         if (isset($_POST["enregistrer"])) {
             $this->saveMenu();
-        }
-        else if (isset($_POST["creer"])) {
+        } else if (isset($_POST["creer"])) {
             $this->creerMenu();
         }
     }
@@ -45,14 +44,15 @@ class MenuControleur
             $platIds = $_POST['plat'];
             $dessertIds = $_POST['dessert'];
 
-            $result = Menu::saveMenu($menuId, $nom, $nombre_personne_minimum, $prix_par_personne, $regime, $theme, $description, $quantite_restante, $condition, $entreeIds, $platIds, $dessertIds, $this->pdo);
+            $menuDAO = new MenuDAO($this->pdo);
+            $result = $menuDAO->saveMenu($menuId, $nom, $nombre_personne_minimum, $prix_par_personne, $regime, $theme, $description, $quantite_restante, $condition, $entreeIds, $platIds, $dessertIds);
             if ($result->getSucceeded()) {
                 $this->actionResult->setSucceeded(true);
                 $this->actionResult->setMessage($result->getMessage());
                 $this->actionResult->setDisplay_type(Resultat::DISPLAY_TYPE_POPUP);
                 $this->actionResult->setRedirect(true);
-                $menuId = Menu::loadMenuIdByName($nom, $this->pdo);
-                $this->actionResult->setRedirectURL('http://localhost:3000/Vite_et_gourmand_Fernand_RADJENDIRANE/editer_menu.php?menuId=' . $menuId);
+                $menuId = $menuDAO->loadMenuIdByName($nom);
+                $this->actionResult->setRedirectURL(BASE_URL_VUE . 'editer_menu.php?menuId=' . $menuId);
             } else {
                 $this->actionResult->setSucceeded(false);
                 $this->actionResult->setMessage($result->getMessage());
@@ -91,14 +91,15 @@ class MenuControleur
             $platIds = $_POST['plat'];
             $dessertIds = $_POST['dessert'];
 
-            $result = Menu::creerMenu($nom, $nombre_personne_minimum, $prix_par_personne, $regime, $theme, $description, $quantite_restante, $condition, $entreeIds, $platIds, $dessertIds, $this->pdo);
+            $menuDAO = new MenuDAO($this->pdo);
+            $result = $menuDAO->creerMenu($nom, $nombre_personne_minimum, $prix_par_personne, $regime, $theme, $description, $quantite_restante, $condition, $entreeIds, $platIds, $dessertIds);
             if ($result->getSucceeded()) {
                 $this->actionResult->setSucceeded(true);
                 $this->actionResult->setMessage($result->getMessage());
                 $this->actionResult->setDisplay_type(Resultat::DISPLAY_TYPE_POPUP);
                 $this->actionResult->setRedirect(true);
-                $menuId = Menu::loadLastMenuCreated($this->pdo);
-                $this->actionResult->setRedirectURL('http://localhost:3000/Vite_et_gourmand_Fernand_RADJENDIRANE/editer_menu.php?menuId=' . $menuId);
+                $menuId = $menuDAO->loadLastMenuCreated();
+                $this->actionResult->setRedirectURL(BASE_URL_VUE . 'editer_menu.php?menuId=' . $menuId);
             } else {
                 $this->actionResult->setSucceeded(false);
                 $this->actionResult->setMessage($result->getMessage());

@@ -185,6 +185,10 @@
 
 }
 
+.footer_left {
+    width: 50%;
+}
+
 .footer_right {
     display: flex;
 }
@@ -196,23 +200,19 @@
 
 }
 
-.condition_text {
-
-    padding-left: 20px;
-
-}
 
 .footer_mention,
+.footer_contact,
 .condition_text {
     color: white;
     text-decoration: none;
+    padding-left: 20px;
 }
 
 .business-hours {
     background: #222;
-    padding: 40px 14px;
+    padding: 35px 30px;
     position: relative;
-    width: 300px;
 }
 
 .business-hours:before {
@@ -239,6 +239,8 @@
     color: #888;
     line-height: 30px;
     border-bottom: 1px solid #333;
+    display: flex;
+    justify-content: space-between;
 }
 
 .business-hours li:last-child {
@@ -1361,4 +1363,8 @@ button:hover {
         /* width: 50%; */
         /* margin: 0 auto; */
     }
+}
+
+.avis_image {
+    height: 100px;
 }

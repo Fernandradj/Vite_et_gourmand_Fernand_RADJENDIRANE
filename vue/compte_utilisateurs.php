@@ -1,0 +1,114 @@
+<?php
+ob_start();
+require_once '../config.php';
+?>
+<?php include ROOT_PATH . 'imports.php' ?>
+<?php include ROOT_PATH . 'session.php' ?>
+
+<?php
+
+$resultats = [];
+if (isset($_SESSION['id']) && isset($_SESSION['role']) && ($_SESSION['role'] == Utilisateur::USER_ROLE_ADMIN)) {
+    $userDAO = new UtilisateurDAO($pdo);
+    $resultats = $userDAO->loadAllUsers();
+}
+
+// require_once($currentFolder . "/controler/UtilisateurControleur.php");
+$controller = new UtilisateurControleur();
+$controller->handleRequest($pdo);
+
+?>
+
+<?php include ROOT_PATH . 'html.php' ?>
+
+<head>
+    <?php include ROOT_PATH . 'head.php' ?>
+    <link rel="stylesheet" href="<?php echo BASE_URL_STYLE . "compte_utilisateurs.css" ?>">
+    <title>Comptes utilisateurs</title>
+</head>
+
+<body>
+
+    <?php include ROOT_PATH . 'header.php' ?>
+    <!-- main -->
+    <main>
+
+        <!-- <a href="creation_compte.php">Créer un nouvel employé</a> -->
+
+        <div class="liste_voyages_container">
+            <div id="messages">
+                <?php
+                $statusMessage = $controller->getResult();
+                include 'message.php';
+
+                if ($statusMessage->getRedirect()) {
+                $redirectUrl = $statusMessage->getRedirectURL();
+                // echo 'goto ' . $redirectUrl;
+                header('Refresh: 2; url=' . $redirectUrl);
+                ?>
+                <script>
+                    setTimeout(function () {
+                        window.location.href = "<?= $redirectUrl ?>";
+                    }, 2000);
+                </script>
+                <?php
+                exit();
+            }
+                ?>
+            </div>
+            <div class="employe_header">
+                <h1>Listes des utilisateurs</h1>
+                <a class="btn btn-primary" href="creation_compte.php" role="button">+ Créer un employé</a>
+            </div>
+            <form method="post">
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Nom d'utilisateur</th>
+                            <th>Email</th>
+                            <th>Téléphone</th>
+                            <th>Role(s)</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        if (!empty($resultats)) {
+                            foreach ($resultats as $user) {
+                                echo "<tr>";
+                                if ($user->isActif()) {
+                                    echo "<td><input type='checkbox' name='users[]' value='" . htmlspecialchars($user->getId()) . "'></td>";
+                                } else {
+                                    echo "<td></td>";
+                                }
+                                echo "<td>" . htmlspecialchars($user->getLastName()) . "</td>";
+                                echo "<td>" . htmlspecialchars($user->getFirstName()) . "</td>";
+                                echo "<td>" . htmlspecialchars($user->getUsername()) . "</td>";
+                                echo "<td>" . htmlspecialchars($user->getEmail()) . "</td>";
+                                echo "<td>" . htmlspecialchars($user->getTelephone()) . "</td>";
+                                echo "<td>" . htmlspecialchars($user->getUserRole()) . "</td>";
+                                echo "<td>" . htmlspecialchars($user->getStatut()) . "</td>";
+                                echo "</tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='10'>Aucun utilisateur trouvé.</td></tr>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
+                <br>
+                <div class="btn_group">
+                    <button class="action-btn" type="submit" name="suspendre">Suspendre</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <?php include ROOT_PATH . 'footer.php' ?>
+
+</body>
+
+</html>
