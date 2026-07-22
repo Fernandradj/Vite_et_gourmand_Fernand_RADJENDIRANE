@@ -19,8 +19,9 @@ SET time_zone = "+00:00";
 
 --
 -- Base de données : `viteetgourmand23_bdd`
-CREATE DATABASE viteetgourmand23_bdd_test1;
-USE viteetgourmand23_bdd_test1;
+CREATE DATABASE viteetgourmand23_bdd;
+
+USE viteetgourmand23_bdd;
 
 -- --------------------------------------------------------
 
