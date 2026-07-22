@@ -50,9 +50,9 @@ Suivez ces étapes pour démarrer le projet sur votre machine locale.
     ```
 3.  **Configuration de la base de données**
 
-      * Lancer PHPMyAdmin et importer le fichier SQL de la base de données présents dans le dossier documents (dans le répository Git) :
-         ** 1. Importer la structure : viteetgourmand23_bdd - structure.pdf
-         ** 2. Importer les données : viteetgourmand23_bdd - données.pdf
+    * Lancer PHPMyAdmin et importer le fichier SQL de la base de données présents dans le dossier documents (dans le répository Git) :
+         - 1. Importer la structure : viteetgourmand23_bdd - structure.pdf
+         - 2. Importer les données : viteetgourmand23_bdd - données.pdf
 
 4.  **Configurer et démarrer les services Xampp**
 
@@ -67,6 +67,6 @@ Suivez ces étapes pour démarrer le projet sur votre machine locale.
 
 
 5.  **Lancement de l'application**
-    L'application sera accessible dans votre navigateur à l'adresse **http://localhost:3000**.
+    * L'application sera accessible dans votre navigateur à l'adresse **http://localhost:3000**.
 
 -----
