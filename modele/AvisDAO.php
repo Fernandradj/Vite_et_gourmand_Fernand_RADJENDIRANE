@@ -7,7 +7,7 @@ class AvisDAO
         $this->pdo = $pdo;
     }
 
-    public function getById(bool $loadData, int $avis_id, string $statut = "", string $commentaire = "", int $note = 0, ?Utilisateur $soumis_par, ?Utilisateur $valide_refuse_par = null, ?Commande $commande = null): Avis
+    public function getById(bool $loadData, int $avis_id, string $statut, string $commentaire, int $note, ?Utilisateur $soumis_par, ?Utilisateur $valide_refuse_par = null, ?Commande $commande = null): Avis
     {
 
         $avisData = new Avis();
